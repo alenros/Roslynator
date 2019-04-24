@@ -9,17 +9,17 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS9001ImplementNonGenericInterfaceTests : AbstractCSharpCodeFixVerifier
+    public class RCS1236ImplementNonGenericCounterpartTests : AbstractCSharpCodeFixVerifier
     {
-        private static readonly ImplementNonGenericInterfaceCodeFixProvider _fixProvider = new ImplementNonGenericInterfaceCodeFixProvider();
+        private static readonly ImplementNonGenericCounterpartCodeFixProvider _fixProvider = new ImplementNonGenericCounterpartCodeFixProvider();
 
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.ImplementNonGenericInterface;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.ImplementNonGenericCounterpart;
 
         public override DiagnosticAnalyzer Analyzer { get; } = new NamedTypeSymbolAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = _fixProvider;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericInterface)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
         public async Task Test_IComparable()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -64,7 +64,7 @@ public abstract class Comparable : IComparable<C>, IComparable
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericInterface)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
         public async Task Test_IComparable_Explicit()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -109,7 +109,7 @@ public abstract class Comparable : IComparable<C>, IComparable
 ", equivalenceKey: _fixProvider.ExplicitEquivalenceKey);
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericInterface)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
         public async Task Test_IComparer()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -167,7 +167,7 @@ public abstract class Comparer : IComparer<C>, IComparer
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericInterface)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
         public async Task Test_IComparer_Explicit()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -225,7 +225,7 @@ public abstract class Comparer : IComparer<C>, IComparer
 ", equivalenceKey: _fixProvider.ExplicitEquivalenceKey);
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericInterface)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
         public async Task Test_IEqualityComparer()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -297,7 +297,7 @@ public abstract class EqualityComparer : IEqualityComparer<C>, IEqualityComparer
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericInterface)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
         public async Task Test_IEqualityComparer_Explicit()
         {
             await VerifyDiagnosticAndFixAsync(@"

@@ -15,13 +15,13 @@ using Roslynator.CodeFixes;
 
 namespace Roslynator.CSharp.CodeFixes
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ImplementNonGenericInterfaceCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ImplementNonGenericCounterpartCodeFixProvider))]
     [Shared]
-    public class ImplementNonGenericInterfaceCodeFixProvider : BaseCodeFixProvider
+    public class ImplementNonGenericCounterpartCodeFixProvider : BaseCodeFixProvider
     {
-        public ImplementNonGenericInterfaceCodeFixProvider()
+        public ImplementNonGenericCounterpartCodeFixProvider()
         {
-            ExplicitEquivalenceKey = GetEquivalenceKey(DiagnosticIdentifiers.ImplementNonGenericInterface, "Explicit");
+            ExplicitEquivalenceKey = GetEquivalenceKey(DiagnosticIdentifiers.ImplementNonGenericCounterpart, "Explicit");
         }
 
         internal readonly string ExplicitEquivalenceKey;
@@ -123,7 +123,7 @@ public int global::System.Collections.IEqualityComparer.GetHashCode(object obj)
 
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.ImplementNonGenericInterface); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.ImplementNonGenericCounterpart); }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)

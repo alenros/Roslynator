@@ -14,7 +14,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = DiagnosticIdentifiers.ImplementNonGenericInterface;
+        = DiagnosticIdentifiers.ImplementNonGenericCounterpart;
         protected override void Fill(ICollection<BaseModel> analyzers)
         {
             analyzers.Clear();
@@ -227,7 +227,7 @@ namespace Roslynator.VisualStudio
             analyzers.Add(new BaseModel(DiagnosticIdentifiers.OrderElementsInDocumentationComment, "Order elements in documentation comment.", !IsEnabled(DiagnosticIdentifiers.OrderElementsInDocumentationComment)));
             analyzers.Add(new BaseModel(DiagnosticIdentifiers.UseShortCircuitingOperator, "Use short-circuiting operator.", !IsEnabled(DiagnosticIdentifiers.UseShortCircuitingOperator)));
             analyzers.Add(new BaseModel(DiagnosticIdentifiers.DuplicateEnumValue, "Duplicate enum value.", !IsEnabled(DiagnosticIdentifiers.DuplicateEnumValue)));
-            analyzers.Add(new BaseModel(DiagnosticIdentifiers.ImplementNonGenericInterface, "Implement non-generic interface.", !IsEnabled(DiagnosticIdentifiers.ImplementNonGenericInterface)));
+            analyzers.Add(new BaseModel(DiagnosticIdentifiers.ImplementNonGenericCounterpart, "Implement non-generic counterpart.", !IsEnabled(DiagnosticIdentifiers.ImplementNonGenericCounterpart)));
         }
     }
 }

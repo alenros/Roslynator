@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Analyzers>
-  <Analyzer Identifier="ImplementNonGenericInterface" IsDevelopment="true">
-    <Id>RCS9001</Id>
-    <Title>Implement non-generic interface.</Title>
+  <Analyzer Identifier="ImplementNonGenericCounterpart" IsDevelopment="true">
+    <Id>RCS1236</Id>
+    <Title>Implement non-generic counterpart.</Title>
     <MessageFormat>Implement {0} when implementing {0}&lt;T&gt;.</MessageFormat>
     <Category>Design</Category>
     <DefaultSeverity>Info</DefaultSeverity>

@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.ImplementNonGenericInterface); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.ImplementNonGenericCounterpart); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -143,7 +143,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.ImplementNonGenericInterface,
+                DiagnosticDescriptors.ImplementNonGenericCounterpart,
                 identifier.GetLocation(),
                 ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("InterfaceName", interfaceName) }),
                 interfaceName);

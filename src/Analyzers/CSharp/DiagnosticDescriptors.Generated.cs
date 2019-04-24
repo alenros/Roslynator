@@ -2569,16 +2569,16 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.DuplicateEnumValue}", 
             customTags:         Array.Empty<string>());
 
-        /// <summary>RCS9001</summary>
-        public static readonly DiagnosticDescriptor ImplementNonGenericInterface = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.ImplementNonGenericInterface, 
-            title:              "Implement non-generic interface.", 
-            messageFormat:      "Implement {0} interface.", 
+        /// <summary>RCS1236</summary>
+        public static readonly DiagnosticDescriptor ImplementNonGenericCounterpart = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.ImplementNonGenericCounterpart, 
+            title:              "Implement non-generic counterpart.", 
+            messageFormat:      "Implement {0} when implementing {0}<T>.", 
             category:           DiagnosticCategories.Design, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ImplementNonGenericInterface}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ImplementNonGenericCounterpart}", 
             customTags:         Array.Empty<string>());
 
     }
