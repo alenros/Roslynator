@@ -21,6 +21,10 @@ namespace Roslynator.VisualStudio
             DataContext = this;
         }
 
+        public string NameColumnHeaderText { get; set; } = "Id";
+
+        public string TitleColumnHeaderText { get; set; } = "Title";
+
         public string CheckBoxColumnHeaderText { get; set; } = "Enabled";
 
         public string Comment { get; set; }
@@ -30,7 +34,7 @@ namespace Roslynator.VisualStudio
         public ObservableCollection<BaseModel> Items { get; } = new ObservableCollection<BaseModel>();
 
         private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
-                {
+        {
             if (!(e.OriginalSource is GridViewColumnHeader clickedHeader))
                 return;
 
@@ -70,6 +74,10 @@ namespace Roslynator.VisualStudio
             else
             {
                 string propertyName = columnHeader.Content.ToString();
+
+                if (propertyName != "Id")
+                    propertyName = "Title";
+
                 sortDescriptions.Add(new SortDescription(propertyName, direction));
             }
 

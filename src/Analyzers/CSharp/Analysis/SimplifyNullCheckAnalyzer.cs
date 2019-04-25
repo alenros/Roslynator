@@ -122,6 +122,7 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
             else if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UseConditionalAccessInsteadOfConditionalExpression)
+                && ((CSharpCompilation)context.Compilation).LanguageVersion >= LanguageVersion.CSharp6
                 && whenNotNull.IsKind(SyntaxKind.CastExpression)
                 && whenNull.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultLiteralExpression))
             {
@@ -160,14 +161,15 @@ namespace Roslynator.CSharp.Analysis
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UseConditionalAccessInsteadOfConditionalExpression))
+            if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UseConditionalAccessInsteadOfConditionalExpression)
+                && ((CSharpCompilation)context.Compilation).LanguageVersion >= LanguageVersion.CSharp6)
             {
                 ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(whenNotNull, cancellationToken);
 
                 if (typeSymbol?.IsErrorType() == false
                     && (typeSymbol.IsReferenceType || typeSymbol.IsValueType)
                     && semanticModel.IsDefaultValue(typeSymbol, whenNull, cancellationToken)
-                    && !RefactoringUtility.ContainsOutArgumentWithLocal(whenNotNull, semanticModel, cancellationToken)
+                    && !CSharpUtility.ContainsOutArgumentWithLocal(whenNotNull, semanticModel, cancellationToken)
                     && !conditionalExpressionInfo.ConditionalExpression.IsInExpressionTree(semanticModel, cancellationToken))
                 {
                     DiagnosticHelpers.ReportDiagnostic(

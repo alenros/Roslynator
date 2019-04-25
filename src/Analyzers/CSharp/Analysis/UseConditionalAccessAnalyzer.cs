@@ -30,9 +30,15 @@ namespace Roslynator.CSharp.Analysis
             base.Initialize(context);
             context.EnableConcurrentExecution();
 
-            context.RegisterSyntaxNodeAction(AnalyzeIfStatement, SyntaxKind.IfStatement);
-            context.RegisterSyntaxNodeAction(AnalyzeBinaryExpression, SyntaxKind.LogicalAndExpression);
-            context.RegisterSyntaxNodeAction(AnalyzeBinaryExpression, SyntaxKind.LogicalOrExpression);
+            context.RegisterCompilationStartAction(startContext =>
+            {
+                if (((CSharpCompilation)startContext.Compilation).LanguageVersion < LanguageVersion.CSharp6)
+                    return;
+
+                startContext.RegisterSyntaxNodeAction(AnalyzeIfStatement, SyntaxKind.IfStatement);
+                startContext.RegisterSyntaxNodeAction(AnalyzeBinaryExpression, SyntaxKind.LogicalAndExpression);
+                startContext.RegisterSyntaxNodeAction(AnalyzeBinaryExpression, SyntaxKind.LogicalOrExpression);
+            });
         }
 
         public static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
@@ -178,7 +184,7 @@ namespace Roslynator.CSharp.Analysis
             if (!ValidateRightExpression(right, binaryExpressionKind, semanticModel, cancellationToken))
                 return false;
 
-            if (RefactoringUtility.ContainsOutArgumentWithLocal(right, semanticModel, cancellationToken))
+            if (CSharpUtility.ContainsOutArgumentWithLocal(right, semanticModel, cancellationToken))
                 return false;
 
             ExpressionSyntax e = FindExpressionThatCanBeConditionallyAccessed(expression, right, isNullable: !typeSymbol.IsReferenceType, semanticModel, cancellationToken);

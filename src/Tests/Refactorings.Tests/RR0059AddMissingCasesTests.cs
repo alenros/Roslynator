@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0059AddMissingCasesTests : AbstractCSharpCodeRefactoringVerifier
+    public class RR0059AddMissingCasesTests : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.AddMissingCases;
 
@@ -247,6 +247,60 @@ class C
             case RegexOptions.CultureInvariant:
                 break;
             default:
+                break;
+        }
+    }
+}
+", equivalenceKey: RefactoringId);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCases)]
+        public async Task Test_TwoFieldsWithSameValue()
+        {
+            await VerifyRefactoringAsync(@"
+enum E
+{
+    A = 0,
+    B = 1,
+    C = 2,
+    D = 2
+}
+
+class C
+{
+    void M()
+    {
+        var e = E.A;
+
+        [||]switch (e)
+        {
+            case E.A:
+                break;
+        }
+    }
+}
+", @"
+enum E
+{
+    A = 0,
+    B = 1,
+    C = 2,
+    D = 2
+}
+
+class C
+{
+    void M()
+    {
+        var e = E.A;
+
+        switch (e)
+        {
+            case E.A:
+                break;
+            case E.B:
+                break;
+            case E.C:
                 break;
         }
     }

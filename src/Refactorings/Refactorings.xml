@@ -656,9 +656,9 @@ return true;]]></After>
       <Syntax>&gt;=</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0083" Identifier="NotifyPropertyChanged" Title="Notify property changed">
+  <Refactoring Id="RR0083" Identifier="NotifyWhenPropertyChange" Title="Notify when property change">
     <Syntaxes>
-      <Syntax>property in class/struct that implements INotifyPropertyChanged</Syntax>
+      <Syntax>property in class/struct that implements System.ComponentModel.INotifyPropertyChanged</Syntax>
     </Syntaxes>
     <Span>setter</Span>
   </Refactoring>
@@ -878,9 +878,9 @@ return true;]]></After>
       <Syntax>property identifier</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0116" Identifier="ReplaceAnyWithAllOrAllWithAny" Title="Replace Any with All (or All with Any)">
+  <Refactoring Id="RR0116" Identifier="InvertLinqMethodCall" Title="Invert LINQ method call">
     <Syntaxes>
-      <Syntax>Any(Func&lt;T, bool&gt; or All(Func&lt;T, bool&gt; from System.Linq.Enumerable namespace</Syntax>
+      <Syntax>System.Linq.Enumerable.Any(Func&lt;T, bool&gt;) or System.Linq.Enumerable.All(Func&lt;T, bool&gt;)</Syntax>
     </Syntaxes>
     <Span>method name</Span>
   </Refactoring>
@@ -1295,7 +1295,7 @@ i--;]]></After>
     </Syntaxes>
     <Span>if keyword</Span>
   </Refactoring>
-  <Refactoring Id="RR0163" Identifier="UncommentSingleLineComment" Title="UncommentSingleLineComment">
+  <Refactoring Id="RR0163" Identifier="UncommentSingleLineComment" Title="Uncomment single-line comment">
     <Syntaxes>
       <Syntax>single-line comment(s)</Syntax>
     </Syntaxes>
@@ -1353,7 +1353,7 @@ i--;]]></After>
       <Syntax>selected statements</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0173" Identifier="WrapInElseClause" Title="Wrap in else clause">
+  <Refactoring Id="RR0173" Identifier="WrapInElseClause" Title="Wrap in else clause" IsObsolete="true">
     <Syntaxes>
       <Syntax>statement</Syntax>
     </Syntaxes>
@@ -2098,6 +2098,44 @@ class C<T> : IEnumerable<T>
         {
         }
     }
+}]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
+  <Refactoring Id="RR0211" Identifier="ConvertStatementsToIfElse" Title="Convert statements to if-else">
+    <Syntaxes>
+      <Syntax>selected statements (first statement must be 'if' statement)</Syntax>
+    </Syntaxes>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[if (x)
+    return 1;
+
+if (y)
+{
+    return 2;
+}
+else if (z)
+{
+    return 3;
+}
+
+return 0;]]></Before>
+        <After><![CDATA[if (x)
+{
+    return 1;
+}
+else if (y)
+{
+    return 2;
+}
+else if (z)
+{
+    return 3;
+}
+else
+{
+    return 0;
 }]]></After>
       </Sample>
     </Samples>
