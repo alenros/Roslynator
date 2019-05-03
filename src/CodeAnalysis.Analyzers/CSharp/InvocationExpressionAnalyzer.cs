@@ -21,7 +21,8 @@ namespace Roslynator.CodeAnalysis.CSharp
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.UnnecessaryNullCheck,
-                    DiagnosticDescriptors.UseElementAccess);
+                    DiagnosticDescriptors.UseElementAccess,
+                    DiagnosticDescriptors.UseReturnValue);
             }
         }
 
@@ -46,6 +47,8 @@ namespace Roslynator.CodeAnalysis.CSharp
 
             if (!invocationInfo.Success)
                 return;
+
+            ISymbol symbol = null;
 
             string methodName = invocationInfo.NameText;
 
@@ -82,6 +85,12 @@ namespace Roslynator.CodeAnalysis.CSharp
 
                         break;
                     }
+            }
+
+            if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UseReturnValue)
+                && invocationExpression.IsParentKind(SyntaxKind.ExpressionStatement))
+            {
+                UseReturnValue();
             }
 
             void AnalyzeUnnecessaryNullCheck()
@@ -133,7 +142,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                 if (!invocationInfo.Expression.GetTrailingTrivia().IsEmptyOrWhitespace())
                     return;
 
-                ISymbol symbol = context.SemanticModel.GetSymbol(invocationExpression, context.CancellationToken);
+                symbol = context.SemanticModel.GetSymbol(invocationExpression, context.CancellationToken);
 
                 if (symbol?.Kind != SymbolKind.Method
                     || symbol.IsStatic
@@ -148,6 +157,25 @@ namespace Roslynator.CodeAnalysis.CSharp
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.UseElementAccess,
                     Location.Create(invocationExpression.SyntaxTree, span));
+            }
+
+            void UseReturnValue()
+            {
+                if (symbol == null)
+                    symbol = context.SemanticModel.GetSymbol(invocationExpression, context.CancellationToken);
+
+                if (symbol?.Kind != SymbolKind.Method)
+                    return;
+
+                if (!RoslynSymbolUtility.IsRoslynType(symbol.ContainingType))
+                    return;
+
+                var methodSymbol = (IMethodSymbol)symbol;
+
+                if (!RoslynSymbolUtility.IsRoslynType(methodSymbol.ReturnType))
+                    return;
+
+                context.ReportDiagnostic(DiagnosticDescriptors.UseReturnValue, invocationExpression);
             }
         }
     }

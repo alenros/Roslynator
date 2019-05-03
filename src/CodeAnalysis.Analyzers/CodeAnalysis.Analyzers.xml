@@ -108,7 +108,7 @@
     </Samples>
   </Analyzer>
   <Analyzer Identifier="UseElementAccess">
-    <Id>R0S0007</Id>
+    <Id>ROS0007</Id>
     <Title>Use element access.</Title>
     <MessageFormat>Use element access.</MessageFormat>
     <Category>Usage</Category>
@@ -116,8 +116,6 @@
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
-    <MinLanguageVersion></MinLanguageVersion>
-    <Summary></Summary>
     <Samples>
       <Sample>
         <Before><![CDATA[syntaxList.First() // [|Id|]]]></Before>
@@ -131,5 +129,20 @@
 * `Microsoft.CodeAnalysis.SyntaxNodeOrTokenList`
 * `Microsoft.CodeAnalysis.SyntaxTokenList`
 * `Microsoft.CodeAnalysis.SyntaxTriviaList`</Remarks>
+  </Analyzer>
+  <Analyzer Identifier="UseReturnValue">
+    <Id>ROS0008</Id>
+    <Title>Use return value.</Title>
+    <MessageFormat>Use return value.</MessageFormat>
+    <Category>Usage</Category>
+    <DefaultSeverity>Warning</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[ifStatement.WithCondition(newCondition); // [|Id|]]]></Before>
+      </Sample>
+    </Samples>
   </Analyzer>
 </Analyzers>

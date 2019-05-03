@@ -9,18 +9,6 @@ namespace Roslynator.CodeAnalysis.CSharp
 {
     public static partial class DiagnosticDescriptors
     {
-        /// <summary>R0S0007</summary>
-        public static readonly DiagnosticDescriptor UseElementAccess = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.UseElementAccess, 
-            title:              "Use element access.", 
-            messageFormat:      "Use element access.", 
-            category:           DiagnosticCategories.Usage, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UseElementAccess}", 
-            customTags:         Array.Empty<string>());
-
         /// <summary>ROS0001</summary>
         public static readonly DiagnosticDescriptor UsePropertySyntaxNodeSpanStart = new DiagnosticDescriptor(
             id:                 DiagnosticIdentifiers.UsePropertySyntaxNodeSpanStart, 
@@ -94,6 +82,30 @@ namespace Roslynator.CodeAnalysis.CSharp
             description:        null, 
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UnnecessaryNullCheck}", 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
+
+        /// <summary>ROS0007</summary>
+        public static readonly DiagnosticDescriptor UseElementAccess = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UseElementAccess, 
+            title:              "Use element access.", 
+            messageFormat:      "Use element access.", 
+            category:           DiagnosticCategories.Usage, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UseElementAccess}", 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>ROS0008</summary>
+        public static readonly DiagnosticDescriptor UseReturnValue = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UseReturnValue, 
+            title:              "Use return value.", 
+            messageFormat:      "Use return value.", 
+            category:           DiagnosticCategories.Usage, 
+            defaultSeverity:    DiagnosticSeverity.Warning, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UseReturnValue}", 
+            customTags:         Array.Empty<string>());
 
     }
 }

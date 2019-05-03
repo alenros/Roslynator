@@ -23,5 +23,30 @@ namespace Roslynator
 
             return false;
         }
+
+        public static bool IsRoslynType(ISymbol symbol)
+        {
+            INamespaceSymbol namespaceSymbol = symbol?.ContainingNamespace;
+
+            while (namespaceSymbol?.IsGlobalNamespace == false)
+            {
+                if (namespaceSymbol.Name == "CodeAnalysis")
+                {
+                    INamespaceSymbol containingNamespace = namespaceSymbol.ContainingNamespace;
+
+                    if (containingNamespace?.Name == "Microsoft")
+                    {
+                        containingNamespace = containingNamespace.ContainingNamespace;
+
+                        if (containingNamespace?.IsGlobalNamespace == true)
+                            return true;
+                    }
+                }
+
+                namespaceSymbol = namespaceSymbol.ContainingNamespace;
+            }
+
+            return false;
+        }
     }
 }
