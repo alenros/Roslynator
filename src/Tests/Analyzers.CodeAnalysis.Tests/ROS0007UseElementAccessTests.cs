@@ -47,6 +47,37 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+        public async Task Test_SyntaxList_Multiline()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using Microsoft.CodeAnalysis;
+
+class C
+{
+    void M()
+    {
+        SyntaxList<SyntaxNode> list = default;
+
+        var first = list
+            .[|First()|];
+    }
+}
+", @"
+using Microsoft.CodeAnalysis;
+
+class C
+{
+    void M()
+    {
+        SyntaxList<SyntaxNode> list = default;
+
+        var first = list[0];
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
         public async Task TestNoDiagnostic_FirstWithPredicate()
         {
             await VerifyNoDiagnosticAsync(@"

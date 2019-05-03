@@ -59,9 +59,9 @@ namespace Roslynator.CodeAnalysis.CSharp
             SyntaxToken closeParenToken = argumentList.CloseParenToken;
 
             ElementAccessExpressionSyntax elementAccessExpression = ElementAccessExpression(
-                invocationInfo.Expression,
+                invocationInfo.Expression.WithoutTrailingTrivia(),
                 BracketedArgumentList(
-                    Token(openParenToken.LeadingTrivia, SyntaxKind.OpenBracketToken, openParenToken.TrailingTrivia),
+                    Token(SyntaxTriviaList.Empty, SyntaxKind.OpenBracketToken, openParenToken.TrailingTrivia),
                     SingletonSeparatedList(Argument(NumericLiteralExpression(0))),
                     Token(closeParenToken.LeadingTrivia, SyntaxKind.CloseBracketToken, closeParenToken.TrailingTrivia)));
 
