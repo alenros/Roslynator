@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.CodeAnalysis.CSharp.Tests
 {
-    public class ROS0006UnnecessaryNullCheckTests : AbstractCSharpCodeFixVerifier
+    public class ROS0006UnnecessaryNullCheckTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UnnecessaryNullCheck;
 

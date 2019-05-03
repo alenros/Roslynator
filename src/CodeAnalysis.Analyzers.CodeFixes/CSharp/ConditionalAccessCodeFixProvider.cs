@@ -28,22 +28,16 @@ namespace Roslynator.CodeAnalysis.CSharp
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out ConditionalAccessExpressionSyntax conditionalAccess))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
-                {
-                    case DiagnosticIdentifiers.RedundantConditionalAccess:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove redundant '?'",
-                                ct => RemoveRedundantConditionalAccessAsync(context.Document, conditionalAccess, ct),
-                                GetEquivalenceKey(diagnostic));
+            Document document = context.Document;
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
-            }
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            CodeAction codeAction = CodeAction.Create(
+                "Remove redundant '?'",
+                ct => RemoveRedundantConditionalAccessAsync(document, conditionalAccess, ct),
+                base.GetEquivalenceKey(diagnostic));
+
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
 
         private static Task<Document> RemoveRedundantConditionalAccessAsync(

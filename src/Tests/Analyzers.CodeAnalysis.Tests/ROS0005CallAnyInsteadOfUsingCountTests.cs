@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.CodeAnalysis.CSharp.Tests
 {
-    public class ROS0005CallAnyInsteadOfUsingCountTests : AbstractCSharpCodeFixVerifier
+    public class ROS0005CallAnyInsteadOfUsingCountTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.CallAnyInsteadOfUsingCount;
 

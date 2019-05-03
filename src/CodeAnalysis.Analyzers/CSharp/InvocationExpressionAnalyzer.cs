@@ -17,7 +17,12 @@ namespace Roslynator.CodeAnalysis.CSharp
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UnnecessaryNullCheck); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticDescriptors.UnnecessaryNullCheck,
+                    DiagnosticDescriptors.UseElementAccess);
+            }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -32,12 +37,12 @@ namespace Roslynator.CodeAnalysis.CSharp
 
         private static void AnalyzeInvocationExpression(SyntaxNodeAnalysisContext context)
         {
-            var invocation = (InvocationExpressionSyntax)context.Node;
+            var invocationExpression = (InvocationExpressionSyntax)context.Node;
 
-            if (invocation.ContainsDiagnostics)
+            if (invocationExpression.ContainsDiagnostics)
                 return;
 
-            SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocation);
+            SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocationExpression);
 
             if (!invocationInfo.Success)
                 return;
@@ -46,6 +51,21 @@ namespace Roslynator.CodeAnalysis.CSharp
 
             switch (invocationInfo.Arguments.Count)
             {
+                case 0:
+                    {
+                        switch (methodName)
+                        {
+                            case "First":
+                                {
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UseElementAccess))
+                                        UseElementAccessInsteadOfCallingFirst();
+
+                                    break;
+                                }
+                        }
+
+                        break;
+                    }
                 case 1:
                     {
                         switch (methodName)
@@ -54,7 +74,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                             case "Any":
                                 {
                                     if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UnnecessaryNullCheck))
-                                        AnalyzeUnnecessaryNullCheck(context, invocationInfo);
+                                        AnalyzeUnnecessaryNullCheck();
 
                                     break;
                                 }
@@ -63,50 +83,72 @@ namespace Roslynator.CodeAnalysis.CSharp
                         break;
                     }
             }
-        }
 
-        private static void AnalyzeUnnecessaryNullCheck(SyntaxNodeAnalysisContext context, SimpleMemberInvocationExpressionInfo invocationInfo)
-        {
-            ExpressionSyntax expression = invocationInfo.InvocationExpression.WalkUpParentheses();
-
-            SyntaxNode parent = expression.Parent;
-
-            if (parent.IsKind(SyntaxKind.LogicalNotExpression))
+            void AnalyzeUnnecessaryNullCheck()
             {
-                expression = (ExpressionSyntax)parent;
+                ExpressionSyntax expression = invocationInfo.InvocationExpression.WalkUpParentheses();
 
-                expression = expression.WalkUpParentheses();
+                SyntaxNode parent = expression.Parent;
 
-                parent = expression.Parent;
+                if (parent.IsKind(SyntaxKind.LogicalNotExpression))
+                {
+                    expression = (ExpressionSyntax)parent;
+
+                    expression = expression.WalkUpParentheses();
+
+                    parent = expression.Parent;
+                }
+
+                if (!parent.IsKind(SyntaxKind.LogicalAndExpression))
+                    return;
+
+                var binaryExpression = (BinaryExpressionSyntax)parent;
+
+                if (expression != binaryExpression.Right)
+                    return;
+
+                if (binaryExpression.Left.ContainsDirectives)
+                    return;
+
+                if (binaryExpression.OperatorToken.ContainsDirectives)
+                    return;
+
+                NullCheckExpressionInfo nullCheckInfo = SyntaxInfo.NullCheckExpressionInfo(binaryExpression.Left, NullCheckStyles.CheckingNotNull & ~NullCheckStyles.HasValue);
+
+                if (!nullCheckInfo.Success)
+                    return;
+
+                if (!CSharpFactory.AreEquivalent(invocationInfo.Expression, nullCheckInfo.Expression))
+                    return;
+
+                TextSpan span = TextSpan.FromBounds(binaryExpression.Left.SpanStart, binaryExpression.OperatorToken.Span.End);
+
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.UnnecessaryNullCheck,
+                    Location.Create(invocationInfo.InvocationExpression.SyntaxTree, span));
             }
 
-            if (!parent.IsKind(SyntaxKind.LogicalAndExpression))
-                return;
+            void UseElementAccessInsteadOfCallingFirst()
+            {
+                if (!invocationInfo.Expression.GetTrailingTrivia().IsEmptyOrWhitespace())
+                    return;
 
-            var binaryExpression = (BinaryExpressionSyntax)parent;
+                ISymbol symbol = context.SemanticModel.GetSymbol(invocationExpression, context.CancellationToken);
 
-            if (expression != binaryExpression.Right)
-                return;
+                if (symbol?.Kind != SymbolKind.Method
+                    || symbol.IsStatic
+                    || symbol.DeclaredAccessibility != Accessibility.Public
+                    || !RoslynSymbolUtility.IsList(symbol.ContainingType.OriginalDefinition))
+                {
+                    return;
+                }
 
-            if (binaryExpression.Left.ContainsDirectives)
-                return;
+                TextSpan span = TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationExpression.Span.End);
 
-            if (binaryExpression.OperatorToken.ContainsDirectives)
-                return;
-
-            NullCheckExpressionInfo nullCheckInfo = SyntaxInfo.NullCheckExpressionInfo(binaryExpression.Left, NullCheckStyles.CheckingNotNull & ~NullCheckStyles.HasValue);
-
-            if (!nullCheckInfo.Success)
-                return;
-
-            if (!CSharpFactory.AreEquivalent(invocationInfo.Expression, nullCheckInfo.Expression))
-                return;
-
-            TextSpan span = TextSpan.FromBounds(binaryExpression.Left.SpanStart, binaryExpression.OperatorToken.Span.End);
-
-            context.ReportDiagnostic(
-                DiagnosticDescriptors.UnnecessaryNullCheck,
-                Location.Create(invocationInfo.InvocationExpression.SyntaxTree, span));
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.UseElementAccess,
+                    Location.Create(invocationExpression.SyntaxTree, span));
+            }
         }
     }
 }

@@ -32,22 +32,16 @@ namespace Roslynator.CodeAnalysis.CSharp
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out SwitchStatementSyntax switchStatement))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
-                {
-                    case DiagnosticIdentifiers.UsePatternMatching:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Use pattern matching",
-                                ct => UsePatternMatchingAsync(context.Document, switchStatement, ct),
-                                GetEquivalenceKey(diagnostic));
+            Document document = context.Document;
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
-            }
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            CodeAction codeAction = CodeAction.Create(
+                "Use pattern matching",
+                ct => UsePatternMatchingAsync(context.Document, switchStatement, ct),
+                GetEquivalenceKey(diagnostic));
+
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
 
         private static Task<Document> UsePatternMatchingAsync(

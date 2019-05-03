@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.CodeAnalysis.CSharp.Tests
 {
-    public class ROS0004UsePatternMatchingTests : AbstractCSharpCodeFixVerifier
+    public class ROS0004UsePatternMatchingTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UsePatternMatching;
 

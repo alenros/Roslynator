@@ -37,9 +37,9 @@ namespace Roslynator.CodeAnalysis.CSharp
 
         private static void AnalyzeSimpleMemberAccessExpression(SyntaxNodeAnalysisContext context)
         {
-            var memberAccess = (MemberAccessExpressionSyntax)context.Node;
+            var memberAccessExpression = (MemberAccessExpressionSyntax)context.Node;
 
-            SimpleNameSyntax name = memberAccess.Name;
+            SimpleNameSyntax name = memberAccessExpression.Name;
 
             switch (name.Kind())
             {
@@ -51,12 +51,12 @@ namespace Roslynator.CodeAnalysis.CSharp
                         {
                             case "Start":
                                 {
-                                    ExpressionSyntax expression = memberAccess.Expression;
+                                    ExpressionSyntax expression = memberAccessExpression.Expression;
 
                                     if (!expression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
                                         break;
 
-                                    ISymbol symbol = context.SemanticModel.GetSymbol(memberAccess, context.CancellationToken);
+                                    ISymbol symbol = context.SemanticModel.GetSymbol(memberAccessExpression, context.CancellationToken);
 
                                     if (symbol == null)
                                         break;
@@ -84,7 +84,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                                     if (!symbol2.ContainingType.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_SyntaxNode))
                                         break;
 
-                                    context.ReportDiagnostic(DiagnosticDescriptors.UsePropertySyntaxNodeSpanStart, memberAccess);
+                                    context.ReportDiagnostic(DiagnosticDescriptors.UsePropertySyntaxNodeSpanStart, memberAccessExpression);
                                     break;
                                 }
                             case "Count":
@@ -100,7 +100,7 @@ namespace Roslynator.CodeAnalysis.CSharp
 
             void CallAnyInsteadOfUsingCount()
             {
-                SyntaxNode expression = memberAccess.WalkUpParentheses();
+                SyntaxNode expression = memberAccessExpression.WalkUpParentheses();
 
                 SyntaxNode parent = expression.Parent;
 
@@ -124,42 +124,22 @@ namespace Roslynator.CodeAnalysis.CSharp
                 if (numericLiteralExpression.Token.ValueText != "0")
                     return;
 
-                ISymbol symbol = context.SemanticModel.GetSymbol(memberAccess, context.CancellationToken);
+                ISymbol symbol = context.SemanticModel.GetSymbol(memberAccessExpression, context.CancellationToken);
 
-                if (!IsList(symbol))
+                if (symbol?.Kind != SymbolKind.Property
+                    || symbol.IsStatic
+                    || symbol.DeclaredAccessibility != Accessibility.Public
+                    || !RoslynSymbolUtility.IsList(symbol.ContainingType.OriginalDefinition))
+                {
                     return;
+                }
 
-                TextSpan span = (memberAccess == binaryExpressionInfo.Left)
+                TextSpan span = (memberAccessExpression == binaryExpressionInfo.Left)
                     ? TextSpan.FromBounds(name.SpanStart, numericLiteralExpression.Span.End)
                     : TextSpan.FromBounds(numericLiteralExpression.SpanStart, name.Span.End);
 
-                context.ReportDiagnostic(DiagnosticDescriptors.CallAnyInsteadOfUsingCount, Location.Create(memberAccess.SyntaxTree, span));
+                context.ReportDiagnostic(DiagnosticDescriptors.CallAnyInsteadOfUsingCount, Location.Create(memberAccessExpression.SyntaxTree, span));
             }
-        }
-
-        private static bool IsList(ISymbol symbol)
-        {
-            if (symbol?.Kind == SymbolKind.Property
-                && !symbol.IsStatic
-                && symbol.DeclaredAccessibility == Accessibility.Public)
-            {
-                INamedTypeSymbol containingType = symbol.ContainingType.OriginalDefinition;
-
-                switch (containingType?.MetadataName)
-                {
-                    case "ChildSyntaxList":
-                    case "SeparatedSyntaxList`1":
-                    case "SyntaxList`1":
-                    case "SyntaxNodeOrTokenList":
-                    case "SyntaxTokenList":
-                    case "SyntaxTriviaList":
-                        {
-                            return containingType.ContainingNamespace.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis);
-                        }
-                }
-            }
-
-            return false;
         }
     }
 }

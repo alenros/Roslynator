@@ -8,6 +8,7 @@ namespace Roslynator.CodeAnalysis.CSharp
 {
     public static partial class DiagnosticIdentifiers
     {
+        public const string UseElementAccess = "R0S0007";
         public const string UsePropertySyntaxNodeSpanStart = "ROS0001";
         public const string UsePropertySyntaxNodeRawKind = "ROS0002";
         public const string RedundantConditionalAccess = "ROS0003";

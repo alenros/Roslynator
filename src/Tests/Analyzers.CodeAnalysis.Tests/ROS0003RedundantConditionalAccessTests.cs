@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.CodeAnalysis.CSharp.Tests
 {
-    public class ROS0003RedundantConditionalAccessTests : AbstractCSharpCodeFixVerifier
+    public class ROS0003RedundantConditionalAccessTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RedundantConditionalAccess;
 
