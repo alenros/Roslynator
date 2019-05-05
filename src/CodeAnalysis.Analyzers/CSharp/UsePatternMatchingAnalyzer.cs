@@ -17,10 +17,11 @@ using Roslynator.CSharp.SyntaxWalkers;
 namespace Roslynator.CodeAnalysis.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class SwitchStatementAnalyzer : BaseDiagnosticAnalyzer
+    public class UsePatternMatchingAnalyzer : BaseDiagnosticAnalyzer
     {
-        private static ImmutableHashSet<string> _syntaxKinds;
-        private static ImmutableHashSet<string> _syntaxNames;
+        private static ImmutableHashSet<string> _syntaxKindNames;
+        private static ImmutableHashSet<string> _syntaxTypeNames;
+        private static ImmutableDictionary<ushort, string> _syntaxKindValuesToNames;
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
@@ -36,7 +37,7 @@ namespace Roslynator.CodeAnalysis.CSharp
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (_syntaxKinds == null)
+                if (_syntaxKindNames == null)
                 {
                     Compilation compilation = startContext.Compilation;
 
@@ -52,25 +53,32 @@ namespace Roslynator.CodeAnalysis.CSharp
                             && f.Name.EndsWith("Syntax", StringComparison.Ordinal))
                         .ToDictionary(f => f.Name.Remove(f.Name.Length - 6), f => f.Name);
 
-                    ImmutableHashSet<string>.Builder syntaxKinds = ImmutableHashSet.CreateBuilder<string>();
-                    ImmutableHashSet<string>.Builder syntaxNames = ImmutableHashSet.CreateBuilder<string>();
+                    ImmutableHashSet<string>.Builder syntaxKindNames = ImmutableHashSet.CreateBuilder<string>();
+                    ImmutableHashSet<string>.Builder syntaxTypeNames = ImmutableHashSet.CreateBuilder<string>();
+                    ImmutableDictionary<ushort, string>.Builder syntaxKindValuesToNames = ImmutableDictionary.CreateBuilder<ushort, string>();
 
-                    foreach (string syntaxKind in Enum.GetValues(typeof(SyntaxKind))
+                    foreach (SyntaxKind syntaxKind in Enum.GetValues(typeof(SyntaxKind))
                         .Cast<SyntaxKind>()
-                        .Select(f => f.ToString()))
+                        .Select(f => f))
                     {
-                        if (kindsToNames.TryGetValue(syntaxKind, out string symbolName))
+                        string name = syntaxKind.ToString();
+
+                        if (kindsToNames.TryGetValue(name, out string symbolName))
                         {
-                            syntaxKinds.Add(syntaxKind);
-                            syntaxNames.Add(symbolName);
+                            syntaxKindNames.Add(name);
+                            syntaxTypeNames.Add(symbolName);
                         }
+
+                        syntaxKindValuesToNames.Add((ushort)syntaxKind, name);
                     }
 
-                    Interlocked.CompareExchange(ref _syntaxKinds, syntaxKinds.ToImmutable(), null);
-                    Interlocked.CompareExchange(ref _syntaxNames, syntaxNames.ToImmutable(), null);
+                    Interlocked.CompareExchange(ref _syntaxKindNames, syntaxKindNames.ToImmutable(), null);
+                    Interlocked.CompareExchange(ref _syntaxTypeNames, syntaxTypeNames.ToImmutable(), null);
+                    Interlocked.CompareExchange(ref _syntaxKindValuesToNames, syntaxKindValuesToNames.ToImmutable(), null);
                 }
 
                 startContext.RegisterSyntaxNodeAction(AnalyzeSwitchStatement, SyntaxKind.SwitchStatement);
+                startContext.RegisterSyntaxNodeAction(AnalyzeIfStatement, SyntaxKind.IfStatement);
             });
         }
 
@@ -130,7 +138,7 @@ namespace Roslynator.CodeAnalysis.CSharp
 
                 string kindName = identifierName.Identifier.ValueText;
 
-                if (!_syntaxKinds.Contains(kindName))
+                if (!_syntaxKindNames.Contains(kindName))
                     return;
 
                 SyntaxList<StatementSyntax> statements = section.Statements;
@@ -168,25 +176,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                 if (name != localName.Identifier.ValueText)
                     return;
 
-                TypeSyntax type = castExpression.Type;
-
-                ITypeSymbol syntaxSymbol = context.SemanticModel.GetTypeSymbol(type, context.CancellationToken);
-
-                if (syntaxSymbol.IsErrorType())
-                    return;
-
-                string syntaxName = syntaxSymbol.Name;
-
-                if (!_syntaxNames.Contains(syntaxName))
-                    return;
-
-                if (kindName.Length != syntaxName.Length - 6)
-                    return;
-
-                if (string.Compare(kindName, 0, syntaxName, 0, kindName.Length, StringComparison.Ordinal) != 0)
-                    return;
-
-                if (!syntaxSymbol.InheritsFrom(MetadataNames.Microsoft_CodeAnalysis_CSharp_CSharpSyntaxNode))
+                if (!IsFixableSyntaxSymbol(castExpression.Type, kindName, context.SemanticModel, context.CancellationToken))
                     return;
             }
 
@@ -253,6 +243,112 @@ namespace Roslynator.CodeAnalysis.CSharp
 
                 return identifierName.Identifier.ValueText;
             }
+        }
+
+        private static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
+        {
+            var ifStatement = (IfStatementSyntax)context.Node;
+
+            SemanticModel semanticModel = context.SemanticModel;
+            CancellationToken cancellationToken = context.CancellationToken;
+
+            IsKindExpressionInfo isKindExpression = IsKindExpressionInfo.Create(ifStatement.Condition, semanticModel, cancellationToken: cancellationToken);
+
+            if (!isKindExpression.Success)
+                return;
+
+            Optional<object> optionalConstantValue = semanticModel.GetConstantValue(isKindExpression.KindExpression, cancellationToken);
+
+            if (!optionalConstantValue.HasValue)
+                return;
+
+            if (!(optionalConstantValue.Value is ushort value))
+                return;
+
+            if (!_syntaxKindValuesToNames.TryGetValue(value, out string name))
+                return;
+
+            if (!_syntaxKindNames.Contains(name))
+                return;
+
+            switch (isKindExpression.Style)
+            {
+                case IsKindExpressionStyle.IsKind:
+                case IsKindExpressionStyle.IsKindConditional:
+                case IsKindExpressionStyle.Kind:
+                case IsKindExpressionStyle.KindConditional:
+                    {
+                        if (!(ifStatement.Statement is BlockSyntax block))
+                            return;
+
+                        Analyze(block.Statements.FirstOrDefault());
+                        break;
+                    }
+                case IsKindExpressionStyle.NotIsKind:
+                case IsKindExpressionStyle.NotIsKindConditional:
+                case IsKindExpressionStyle.NotKind:
+                case IsKindExpressionStyle.NotKindConditional:
+                    {
+                        if (ifStatement.Else != null)
+                            return;
+
+                        if (!(ifStatement.Statement.SingleNonBlockStatementOrDefault() is ReturnStatementSyntax returnStatement))
+                            return;
+
+                        if (returnStatement.Expression != null)
+                            return;
+
+                        Analyze(ifStatement.NextStatement());
+                        break;
+                    }
+            }
+
+            void Analyze(StatementSyntax statement)
+            {
+                SingleLocalDeclarationStatementInfo localInfo = SyntaxInfo.SingleLocalDeclarationStatementInfo(statement);
+
+                if (!localInfo.Success)
+                    return;
+
+                if (!(localInfo.Value is CastExpressionSyntax castExpression))
+                    return;
+
+                if (!IsFixableSyntaxSymbol(castExpression.Type, name, semanticModel, cancellationToken))
+                    return;
+
+                if (!CSharpFactory.AreEquivalent(isKindExpression.Expression, castExpression.Expression))
+                    return;
+
+                context.ReportDiagnostic(DiagnosticDescriptors.UsePatternMatching, ifStatement.IfKeyword);
+            }
+        }
+
+        private static bool IsFixableSyntaxSymbol(
+            TypeSyntax type,
+            string kindName,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            ITypeSymbol syntaxSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
+
+            if (syntaxSymbol.IsErrorType())
+                return false;
+
+            string syntaxName = syntaxSymbol.Name;
+
+            if (!_syntaxTypeNames.Contains(syntaxName))
+                return false;
+
+            if (kindName.Length != syntaxName.Length - 6)
+                return false;
+
+            if (string.Compare(kindName, 0, syntaxName, 0, kindName.Length, StringComparison.Ordinal) != 0)
+                return false;
+
+            if (!syntaxSymbol.InheritsFrom(MetadataNames.Microsoft_CodeAnalysis_CSharp_CSharpSyntaxNode))
+                return false;
+
+            return true;
         }
 
         private static bool IsLocalVariableReferenced(

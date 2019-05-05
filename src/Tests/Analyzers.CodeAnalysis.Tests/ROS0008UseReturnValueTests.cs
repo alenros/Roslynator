@@ -32,26 +32,5 @@ class C
 }
 ");
         }
-
-        //[Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReturnValue)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-
-class C
-{
-    void M()
-    {
-    }
-}
-");
-        }
     }
 }

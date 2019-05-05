@@ -12,12 +12,12 @@ namespace Roslynator.CodeAnalysis.CSharp.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UsePatternMatching;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new SwitchStatementAnalyzer();
+        public override DiagnosticAnalyzer Analyzer { get; } = new UsePatternMatchingAnalyzer();
 
-        public override CodeFixProvider FixProvider { get; } = new SwitchStatementCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new UsePatternMatchingCodeFixProvider();
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
-        public async Task Test()
+        public async Task Test_SwitchStatement()
         {
             await VerifyDiagnosticAndFixAsync(@"
 using System;
@@ -80,7 +80,7 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
-        public async Task Test_LocalDeclaration()
+        public async Task Test_SwitchStatement_LocalDeclaration()
         {
             await VerifyDiagnosticAndFixAsync(@"
 using System;
@@ -145,7 +145,369 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
-        public async Task TestNoDiagnostic_VariableIsReferenced()
+        public async Task Test_IfStatement_IsKind()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+class C
+{
+    void M()
+    {
+        SyntaxNode x = null;
+
+        [|if|] (x.IsKind(SyntaxKind.IdentifierName))
+        {
+            var y = (IdentifierNameSyntax)x;
+        }
+    }
+}
+", @"
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+class C
+{
+    void M()
+    {
+        SyntaxNode x = null;
+
+        if (x is IdentifierNameSyntax y)
+        {
+        }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+        public async Task Test_IfStatement_IsKind_Conditional()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+class C
+{
+    void M()
+    {
+        SyntaxNode x = null;
+
+        [|if|] (x?.IsKind(SyntaxKind.IdentifierName) == true)
+        {
+            var y = (IdentifierNameSyntax)x;
+        }
+    }
+}
+", @"
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+class C
+{
+    void M()
+    {
+        SyntaxNode x = null;
+
+        if (x is IdentifierNameSyntax y)
+        {
+        }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+        public async Task Test_IfStatement_Kind()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+class C
+{
+    void M()
+    {
+        SyntaxNode x = null;
+
+        [|if|] (x.Kind() == SyntaxKind.IdentifierName)
+        {
+            var y = (IdentifierNameSyntax)x;
+        }
+    }
+}
+", @"
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+class C
+{
+    void M()
+    {
+        SyntaxNode x = null;
+
+        if (x is IdentifierNameSyntax y)
+        {
+        }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+        public async Task Test_IfStatement_Kind_Conditional()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+class C
+{
+    void M()
+    {
+        SyntaxNode x = null;
+
+        [|if|] (x?.Kind() == SyntaxKind.IdentifierName)
+        {
+            var y = (IdentifierNameSyntax)x;
+        }
+    }
+}
+", @"
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+class C
+{
+    void M()
+    {
+        SyntaxNode x = null;
+
+        if (x is IdentifierNameSyntax y)
+        {
+        }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+        public async Task Test_IfStatement_NotIsKind()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+class C
+{
+    void M()
+    {
+        SyntaxNode x = null;
+
+        [|if|] (!x.IsKind(SyntaxKind.IdentifierName))
+        {
+            return;
+        }
+
+        var y = (IdentifierNameSyntax)x;
+    }
+}
+", @"
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+class C
+{
+    void M()
+    {
+        SyntaxNode x = null;
+
+        if (!(x is IdentifierNameSyntax y))
+        {
+            return;
+        }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+        public async Task Test_IfStatement_NotIsKind_Embedded()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+class C
+{
+    void M()
+    {
+        SyntaxNode x = null;
+
+        [|if|] (!x.IsKind(SyntaxKind.IdentifierName))
+            return;
+
+        var y = (IdentifierNameSyntax)x;
+    }
+}
+", @"
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+class C
+{
+    void M()
+    {
+        SyntaxNode x = null;
+
+        if (!(x is IdentifierNameSyntax y))
+            return;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+        public async Task Test_IfStatement_NotIsKind_Conditional()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+class C
+{
+    void M()
+    {
+        SyntaxNode x = null;
+
+        [|if|] (x?.IsKind(SyntaxKind.IdentifierName) != true)
+        {
+            return;
+        }
+
+        var y = (IdentifierNameSyntax)x;
+    }
+}
+", @"
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+class C
+{
+    void M()
+    {
+        SyntaxNode x = null;
+
+        if (!(x is IdentifierNameSyntax y))
+        {
+            return;
+        }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+        public async Task Test_IfStatement_NotKind()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+class C
+{
+    void M()
+    {
+        SyntaxNode x = null;
+
+        [|if|] (x.Kind() != SyntaxKind.IdentifierName)
+        {
+            return;
+        }
+
+        var y = (IdentifierNameSyntax)x;
+    }
+}
+", @"
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+class C
+{
+    void M()
+    {
+        SyntaxNode x = null;
+
+        if (!(x is IdentifierNameSyntax y))
+        {
+            return;
+        }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+        public async Task Test_IfStatement_NotKind_Conditional()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+class C
+{
+    void M()
+    {
+        SyntaxNode x = null;
+
+        [|if|] (x?.Kind() != SyntaxKind.IdentifierName)
+        {
+            return;
+        }
+
+        var y = (IdentifierNameSyntax)x;
+    }
+}
+", @"
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+class C
+{
+    void M()
+    {
+        SyntaxNode x = null;
+
+        if (!(x is IdentifierNameSyntax y))
+        {
+            return;
+        }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+        public async Task TestNoDiagnostic_SwitchStatement_VariableIsReferenced()
         {
             await VerifyNoDiagnosticAsync(@"
 using Microsoft.CodeAnalysis;
