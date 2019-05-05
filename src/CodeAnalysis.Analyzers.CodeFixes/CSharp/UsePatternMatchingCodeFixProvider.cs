@@ -79,12 +79,8 @@ namespace Roslynator.CodeAnalysis.CSharp
 
                 StatementSyntax statement = statements.First();
 
-                if (statement.IsKind(SyntaxKind.Block))
-                {
-                    var block = (BlockSyntax)statement;
-
+                if (statement is BlockSyntax block)
                     statement = block.Statements.FirstOrDefault();
-                }
 
                 SingleLocalDeclarationStatementInfo localInfo = SyntaxInfo.SingleLocalDeclarationStatementInfo((LocalDeclarationStatementSyntax)statement);
 

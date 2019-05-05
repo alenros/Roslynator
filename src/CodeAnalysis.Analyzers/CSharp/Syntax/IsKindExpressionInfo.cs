@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Syntax
             get
             {
                 return (Success)
-                    ? $"{GetType().Name} {Style} {Expression} {IsKindExpression}"
+                    ? $"{GetType().Name} {Style} {IsKindExpression}"
                     : "Uninitialized";
             }
         }
