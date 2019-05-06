@@ -284,10 +284,12 @@ namespace Roslynator.CodeAnalysis.CSharp
                         if (ifStatement.Else != null)
                             return;
 
-                        if (!(ifStatement.Statement.SingleNonBlockStatementOrDefault() is ReturnStatementSyntax returnStatement))
+                        StatementSyntax statement = ifStatement.Statement.SingleNonBlockStatementOrDefault();
+
+                        if (statement == null)
                             return;
 
-                        if (returnStatement.Expression != null)
+                        if (!CSharpFacts.IsJumpStatement(statement.Kind()))
                             return;
 
                         Analyze(ifStatement.NextStatement());

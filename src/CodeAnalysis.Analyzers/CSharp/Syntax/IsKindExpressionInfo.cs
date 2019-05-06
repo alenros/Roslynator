@@ -183,35 +183,9 @@ namespace Roslynator.CSharp.Syntax
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            if (!(expression is IdentifierNameSyntax identifierName))
-                return false;
-
-            if (!string.Equals(identifierName.Identifier.ValueText, "Kind", StringComparison.Ordinal))
-                return false;
-
-            ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
-
-            if (symbol?.Kind != SymbolKind.Method)
-                return false;
-
-            if (!symbol.ContainingType.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_CSharp_CSharpExtensions))
-                return false;
-
-            var methodSymbol = (IMethodSymbol)symbol;
-
-            if (methodSymbol.MethodKind != MethodKind.ReducedExtension)
-                return false;
-
-            methodSymbol = methodSymbol.ReducedFrom;
-
-            if (!methodSymbol.ReturnType.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_CSharp_SyntaxKind))
-                return false;
-
-            return methodSymbol
-                .Parameters
-                .SingleOrDefault(shouldThrow: false)?
-                .Type
-                .HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_SyntaxNode) == true;
+            return expression is IdentifierNameSyntax identifierName
+                && string.Equals(identifierName.Identifier.ValueText, "Kind", StringComparison.Ordinal)
+                && RoslynSymbolUtility.IsKindExtensionMethod(expression, semanticModel, cancellationToken);
         }
 
         private static bool IsIsKindMethod(
@@ -219,42 +193,9 @@ namespace Roslynator.CSharp.Syntax
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            if (!(expression is IdentifierNameSyntax identifierName))
-                return false;
-
-            if (!string.Equals(identifierName.Identifier.ValueText, "IsKind", StringComparison.Ordinal))
-                return false;
-
-            ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
-
-            if (symbol?.Kind != SymbolKind.Method)
-                return false;
-
-            if (!symbol.ContainingType.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_CSharpExtensions))
-                return false;
-
-            var methodSymbol = (IMethodSymbol)symbol;
-
-            if (methodSymbol.MethodKind != MethodKind.ReducedExtension)
-                return false;
-
-            methodSymbol = methodSymbol.ReducedFrom;
-
-            if (methodSymbol.ReturnType.SpecialType != SpecialType.System_Boolean)
-                return false;
-
-            ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
-
-            if (parameters.Length != 2)
-                return false;
-
-            if (!parameters[0].Type.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_SyntaxNode))
-                return false;
-
-            if (!parameters[1].Type.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_CSharp_SyntaxKind))
-                return false;
-
-            return true;
+            return expression is IdentifierNameSyntax identifierName
+                && string.Equals(identifierName.Identifier.ValueText, "IsKind", StringComparison.Ordinal)
+                && RoslynSymbolUtility.IsIsKindExtensionMethod(expression, semanticModel, cancellationToken);
         }
     }
 }

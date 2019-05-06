@@ -74,7 +74,6 @@ namespace Roslynator.CodeAnalysis.CSharp
                         switch (methodName)
                         {
                             case "IsKind":
-                            case "Any":
                                 {
                                     if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UnnecessaryNullCheck))
                                         AnalyzeUnnecessaryNullCheck();
@@ -99,15 +98,6 @@ namespace Roslynator.CodeAnalysis.CSharp
 
                 SyntaxNode parent = expression.Parent;
 
-                if (parent.IsKind(SyntaxKind.LogicalNotExpression))
-                {
-                    expression = (ExpressionSyntax)parent;
-
-                    expression = expression.WalkUpParentheses();
-
-                    parent = expression.Parent;
-                }
-
                 if (!parent.IsKind(SyntaxKind.LogicalAndExpression))
                     return;
 
@@ -128,6 +118,9 @@ namespace Roslynator.CodeAnalysis.CSharp
                     return;
 
                 if (!CSharpFactory.AreEquivalent(invocationInfo.Expression, nullCheckInfo.Expression))
+                    return;
+
+                if (!RoslynSymbolUtility.IsIsKindExtensionMethod(invocationExpression, context.SemanticModel, context.CancellationToken))
                     return;
 
                 TextSpan span = TextSpan.FromBounds(binaryExpression.Left.SpanStart, binaryExpression.OperatorToken.Span.End);
