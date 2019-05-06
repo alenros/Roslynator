@@ -34,7 +34,7 @@ namespace Roslynator.CodeAnalysis.CSharp
 
             CodeAction codeAction = CodeAction.Create(
                 "Use property 'SpanStart'",
-                ct => UsePropertySyntaxNodeSpanStartAsync(context.Document, memberAccess, ct),
+                ct => UsePropertySyntaxNodeSpanStartAsync(document, memberAccess, ct),
                 GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);

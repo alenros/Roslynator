@@ -536,5 +536,28 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+        public async Task TestNoDiagnostic_IfStatement_SimpleMemberAccessExpression()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+class C
+{
+    void M()
+    {
+        SyntaxNode x = null;
+
+        if (x.IsKind(SyntaxKind.SimpleMemberAccessExpression))
+        {
+            var y = (MemberAccessExpressionSyntax)x;
+        }
+    }
+}
+");
+        }
     }
 }

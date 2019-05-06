@@ -41,12 +41,10 @@ namespace Roslynator.CodeAnalysis.CSharp
 
             SimpleNameSyntax name = memberAccessExpression.Name;
 
-            switch (name.Kind())
+            switch (name)
             {
-                case SyntaxKind.IdentifierName:
+                case IdentifierNameSyntax identifierName:
                     {
-                        var identifierName = (IdentifierNameSyntax)name;
-
                         switch (identifierName.Identifier.ValueText)
                         {
                             case "Start":

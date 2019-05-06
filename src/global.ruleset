@@ -352,6 +352,9 @@
     <Rule Id="RCS1188" Action="Info" />
     <Rule Id="RCS1189" Action="Info" />
   </Rules>
+  <Rules AnalyzerId="Roslynator.CodeAnalysis.Analyzers" RuleNamespace="Roslynator.CodeAnalysis.Analyzers">
+    <Rule Id="ROS0004" Action="Info" />
+  </Rules>
   <Rules AnalyzerId="SonarAnalyzer.CSharp" RuleNamespace="SonarAnalyzer.CSharp">
     <Rule Id="S101" Action="None" />
     <Rule Id="S1066" Action="None" />

@@ -46,7 +46,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                     {
                         CodeAction codeAction = CodeAction.Create(
                             Title,
-                            ct => UsePatternMatchingAsync(context.Document, switchStatement, ct),
+                            ct => UsePatternMatchingAsync(document, switchStatement, ct),
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
@@ -56,7 +56,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                     {
                         CodeAction codeAction = CodeAction.Create(
                             Title,
-                            ct => UsePatternMatchingAsync(context.Document, ifStatement, ct),
+                            ct => UsePatternMatchingAsync(document, ifStatement, ct),
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
@@ -77,7 +77,7 @@ namespace Roslynator.CodeAnalysis.CSharp
 
                 SyntaxList<StatementSyntax> statements = section.Statements;
 
-                StatementSyntax statement = statements.First();
+                StatementSyntax statement = statements[0];
 
                 if (statement is BlockSyntax block)
                     statement = block.Statements.FirstOrDefault();

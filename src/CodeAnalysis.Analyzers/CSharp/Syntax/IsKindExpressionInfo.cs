@@ -131,12 +131,10 @@ namespace Roslynator.CSharp.Syntax
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            switch (expression1.Kind())
+            switch (expression1)
             {
-                case SyntaxKind.InvocationExpression:
+                case InvocationExpressionSyntax invocationExpression:
                     {
-                        var invocationExpression = (InvocationExpressionSyntax)expression1;
-
                         SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocationExpression);
 
                         if (!invocationInfo.Success)
@@ -147,10 +145,9 @@ namespace Roslynator.CSharp.Syntax
 
                         return new IsKindExpressionInfo(binaryExpression, invocationInfo.Expression, expression2, (binaryExpressionKind == SyntaxKind.EqualsExpression) ? IsKindExpressionStyle.Kind : IsKindExpressionStyle.NotKind);
                     }
-                case SyntaxKind.ConditionalAccessExpression:
-                    {
-                        var conditionalAccess = (ConditionalAccessExpressionSyntax)expression1;
 
+                case ConditionalAccessExpressionSyntax conditionalAccess:
+                    {
                         if (!(conditionalAccess.WhenNotNull is InvocationExpressionSyntax invocationExpression))
                             break;
 

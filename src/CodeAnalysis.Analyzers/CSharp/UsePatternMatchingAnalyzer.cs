@@ -131,10 +131,8 @@ namespace Roslynator.CodeAnalysis.CSharp
 
                 SimpleNameSyntax simpleName = memberAccess.Name;
 
-                if (!simpleName.IsKind(SyntaxKind.IdentifierName))
+                if (!(simpleName is IdentifierNameSyntax identifierName))
                     return;
-
-                var identifierName = (IdentifierNameSyntax)simpleName;
 
                 string kindName = identifierName.Identifier.ValueText;
 
@@ -148,10 +146,8 @@ namespace Roslynator.CodeAnalysis.CSharp
                 if (statement == null)
                     return;
 
-                if (statement.IsKind(SyntaxKind.Block))
+                if (statement is BlockSyntax block)
                 {
-                    var block = (BlockSyntax)statement;
-
                     statement = block.Statements.FirstOrDefault();
                 }
 
@@ -163,15 +159,11 @@ namespace Roslynator.CodeAnalysis.CSharp
                 if (!localStatement.Success)
                     return;
 
-                if (!localStatement.Value.IsKind(SyntaxKind.CastExpression))
+                if (!(localStatement.Value is CastExpressionSyntax castExpression))
                     return;
 
-                var castExpression = (CastExpressionSyntax)localStatement.Value;
-
-                if (!castExpression.Expression.IsKind(SyntaxKind.IdentifierName))
+                if (!(castExpression.Expression is IdentifierNameSyntax localName))
                     return;
-
-                var localName = (IdentifierNameSyntax)castExpression.Expression;
 
                 if (name != localName.Identifier.ValueText)
                     return;
