@@ -16,5 +16,6 @@ namespace Roslynator.CodeAnalysis.CSharp
         public const string UnnecessaryNullCheck = "ROS0006";
         public const string UseElementAccess = "ROS0007";
         public const string UseReturnValue = "ROS0008";
+        public const string CallLastInsteadOfUsingElementAccess = "ROS0009";
     }
 }

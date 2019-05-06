@@ -107,5 +107,17 @@ namespace Roslynator.CodeAnalysis.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UseReturnValue}", 
             customTags:         Array.Empty<string>());
 
+        /// <summary>ROS0009</summary>
+        public static readonly DiagnosticDescriptor CallLastInsteadOfUsingElementAccess = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess, 
+            title:              "Call 'Last' instead of using [].", 
+            messageFormat:      "Call 'Last' instead of using [].", 
+            category:           DiagnosticCategories.Usage, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess}", 
+            customTags:         Array.Empty<string>());
+
     }
 }

@@ -63,8 +63,26 @@
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[]]></Before>
-        <After><![CDATA[]]></After>
+        <Before><![CDATA[if (syntaxNode.IsKind(SyntaxKind.IdentifierName)) // [|Id|]
+{
+    var identifierName = (IdentifierNameSyntax)syntaxNode;
+}]]></Before>
+        <After><![CDATA[if (syntaxNode is IdentifierNameSyntax identifierName)
+{
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[if (!syntaxNode.IsKind(SyntaxKind.IdentifierName)) // [|Id|]
+{
+    return;
+}
+
+var identifierName = (IdentifierNameSyntax)syntaxNode;
+]]></Before>
+        <After><![CDATA[if (!(syntaxNode is IdentifierNameSyntax identifierName))
+{
+  return;
+}]]></After>
       </Sample>
     </Samples>
   </Analyzer>
@@ -144,5 +162,28 @@
         <Before><![CDATA[ifStatement.WithCondition(newCondition); // [|Id|]]]></Before>
       </Sample>
     </Samples>
+  </Analyzer>
+  <Analyzer Identifier="CallLastInsteadOfUsingElementAccess">
+    <Id>ROS0009</Id>
+    <Title>Call 'Last' instead of using [].</Title>
+    <MessageFormat>Call 'Last' instead of using [].</MessageFormat>
+    <Category>Usage</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[syntaxList[syntaxList.Count - 1] // [|Id|]]]></Before>
+        <After><![CDATA[!syntaxList.Last()]]></After>
+      </Sample>
+    </Samples>
+    <Remarks>This analyzer is applicable for following types:
+* `Microsoft.CodeAnalysis.ChildSyntaxList`
+* `Microsoft.CodeAnalysis.SeparatedSyntaxList&lt;TNode&gt;`
+* `Microsoft.CodeAnalysis.SyntaxList&lt;TNode&gt;`
+* `Microsoft.CodeAnalysis.SyntaxNodeOrTokenList`
+* `Microsoft.CodeAnalysis.SyntaxTokenList`
+* `Microsoft.CodeAnalysis.SyntaxTriviaList`</Remarks>
   </Analyzer>
 </Analyzers>
