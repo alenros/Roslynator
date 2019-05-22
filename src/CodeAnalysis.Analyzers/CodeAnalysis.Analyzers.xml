@@ -139,6 +139,10 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
         <Before><![CDATA[syntaxList.First() // [|Id|]]]></Before>
         <After><![CDATA[syntaxList[0]]]></After>
       </Sample>
+      <Sample>
+        <Before><![CDATA[triviaList.ElementAt(1) // [|Id|]]]></Before>
+        <After><![CDATA[triviaList[1]]]></After>
+      </Sample>
     </Samples>
     <Remarks>This analyzer is applicable for following types:
 * `Microsoft.CodeAnalysis.ChildSyntaxList`

@@ -30,7 +30,6 @@ namespace Roslynator.CodeAnalysis.CSharp
                 return;
 
             Document document = context.Document;
-
             Diagnostic diagnostic = context.Diagnostics[0];
 
             CodeAction codeAction = CodeAction.Create(

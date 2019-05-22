@@ -73,6 +73,13 @@ namespace Roslynator.CodeAnalysis.CSharp
                     {
                         switch (methodName)
                         {
+                            case "ElementAt":
+                                {
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UseElementAccess))
+                                        UseElementAccessInsteadOfCallingElementAt();
+
+                                    break;
+                                }
                             case "IsKind":
                                 {
                                     if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UnnecessaryNullCheck))
@@ -141,6 +148,28 @@ namespace Roslynator.CodeAnalysis.CSharp
                     || symbol.IsStatic
                     || symbol.DeclaredAccessibility != Accessibility.Public
                     || !RoslynSymbolUtility.IsList(symbol.ContainingType.OriginalDefinition))
+                {
+                    return;
+                }
+
+                TextSpan span = TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationExpression.Span.End);
+
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.UseElementAccess,
+                    Location.Create(invocationExpression.SyntaxTree, span));
+            }
+
+            void UseElementAccessInsteadOfCallingElementAt()
+            {
+                if (!invocationInfo.Expression.GetTrailingTrivia().IsEmptyOrWhitespace())
+                    return;
+
+                symbol = context.SemanticModel.GetSymbol(invocationExpression, context.CancellationToken);
+
+                if (symbol?.Kind != SymbolKind.Method
+                    || symbol.IsStatic
+                    || symbol.DeclaredAccessibility != Accessibility.Public
+                    || !symbol.ContainingType.OriginalDefinition.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_SyntaxTriviaList))
                 {
                     return;
                 }

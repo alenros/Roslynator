@@ -33,7 +33,6 @@ namespace Roslynator.CodeAnalysis.CSharp
                 return;
 
             Document document = context.Document;
-
             Diagnostic diagnostic = context.Diagnostics[0];
 
             CodeAction codeAction = CodeAction.Create(
@@ -62,7 +61,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                 invocationInfo.Expression.WithoutTrailingTrivia(),
                 BracketedArgumentList(
                     Token(SyntaxTriviaList.Empty, SyntaxKind.OpenBracketToken, openParenToken.TrailingTrivia),
-                    SingletonSeparatedList(Argument(NumericLiteralExpression(0))),
+                    SingletonSeparatedList(argumentList.Arguments.FirstOrDefault() ?? Argument(NumericLiteralExpression(0))),
                     Token(closeParenToken.LeadingTrivia, SyntaxKind.CloseBracketToken, closeParenToken.TrailingTrivia)));
 
             return document.ReplaceNodeAsync(invocationExpression, elementAccessExpression, cancellationToken);

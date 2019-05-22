@@ -17,7 +17,7 @@ namespace Roslynator.CodeAnalysis.CSharp.Tests
         public override CodeFixProvider FixProvider { get; } = new InvocationExpressionCodeFixProvider();
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
-        public async Task Test_SyntaxList()
+        public async Task Test_SyntaxList_First()
         {
             await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
@@ -47,7 +47,7 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
-        public async Task Test_SyntaxList_Multiline()
+        public async Task Test_SyntaxList_First_Multiline()
         {
             await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
@@ -72,6 +72,36 @@ class C
         SyntaxList<SyntaxNode> list = default;
 
         var first = list[0];
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+        public async Task Test_SyntaxTriviaList_ElementAt()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using Microsoft.CodeAnalysis;
+
+class C
+{
+    void M()
+    {
+        SyntaxTriviaList list = default;
+
+        var second = list.[|ElementAt(1)|];
+    }
+}
+", @"
+using Microsoft.CodeAnalysis;
+
+class C
+{
+    void M()
+    {
+        SyntaxTriviaList list = default;
+
+        var second = list[1];
     }
 }
 ");
