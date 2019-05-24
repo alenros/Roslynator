@@ -17,7 +17,6 @@
 * &emsp; Roslynator\.[NameGenerator](Roslynator/NameGenerator/README.md)
 * &emsp; Roslynator\.[SeparatedSyntaxListSelection\<TNode>](Roslynator/SeparatedSyntaxListSelection-1/README.md)
 * &emsp; Roslynator\.[SyntaxListSelection\<TNode>](Roslynator/SyntaxListSelection-1/README.md)
-* &emsp; Roslynator\.SyntaxListSelection\<TNode>
 * &emsp; \| &emsp; Roslynator\.CSharp\.[MemberDeclarationListSelection](Roslynator/CSharp/MemberDeclarationListSelection/README.md)
 * &emsp; \| &emsp; Roslynator\.CSharp\.[StatementListSelection](Roslynator/CSharp/StatementListSelection/README.md)
 * &emsp; Roslynator\.CSharp\.[ModifierList\<TNode>](Roslynator/CSharp/ModifierList-1/README.md)
