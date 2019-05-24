@@ -8,7 +8,7 @@
 
 ## Summary
 
-Initializes a new instance of TextLineCollectionSelection\.
+Initializes a new instance of [TextLineCollectionSelection](../README.md)\.
 
 ```csharp
 protected TextLineCollectionSelection(Microsoft.CodeAnalysis.Text.TextLineCollection lines, Microsoft.CodeAnalysis.Text.TextSpan span, int firstIndex, int lastIndex)

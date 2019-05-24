@@ -10,14 +10,14 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [Equals(MetadataName)](#Roslynator_MetadataName_Equals_Roslynator_MetadataName_) | Indicates whether this instance and a specified MetadataName are equal\. \(Implements [IEquatable\<MetadataName>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)\) |
+| [Equals(MetadataName)](#Roslynator_MetadataName_Equals_Roslynator_MetadataName_) | Indicates whether this instance and a specified [MetadataName](../README.md) are equal\. \(Implements [IEquatable\<MetadataName>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)\) |
 | [Equals(Object)](#Roslynator_MetadataName_Equals_System_Object_) | Indicates whether this instance and a specified object are equal\. \(Overrides [ValueType.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.equals)\) |
 
 ## Equals\(MetadataName\) <a name="Roslynator_MetadataName_Equals_Roslynator_MetadataName_"></a>
 
 ### Summary
 
-Indicates whether this instance and a specified MetadataName are equal\.
+Indicates whether this instance and a specified [MetadataName](../README.md) are equal\.
 
 ```csharp
 public bool Equals(Roslynator.MetadataName other)

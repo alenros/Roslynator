@@ -8,7 +8,7 @@
 
 ## Summary
 
-Initializes a new instance of the SyntaxListSelection\<TNode>\.
+Initializes a new instance of the [SyntaxListSelection\<TNode>](../README.md)\.
 
 ```csharp
 protected SyntaxListSelection(Microsoft.CodeAnalysis.SyntaxList<TNode> list, Microsoft.CodeAnalysis.Text.TextSpan span, int firstIndex, int lastIndex)

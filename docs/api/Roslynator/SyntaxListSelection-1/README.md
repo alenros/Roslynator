@@ -33,7 +33,7 @@ public class SyntaxListSelection<TNode> : Roslynator.ISelection<TNode> where TNo
 
 | Constructor | Summary |
 | ----------- | ------- |
-| [SyntaxListSelection(SyntaxList\<TNode>, TextSpan, Int32, Int32)](-ctor/README.md) | Initializes a new instance of the SyntaxListSelection\<TNode>\. |
+| [SyntaxListSelection(SyntaxList\<TNode>, TextSpan, Int32, Int32)](-ctor/README.md) | Initializes a new instance of the [SyntaxListSelection\<TNode>](./README.md)\. |
 
 ## Indexers
 
@@ -55,7 +55,7 @@ public class SyntaxListSelection<TNode> : Roslynator.ISelection<TNode> where TNo
 
 | Method | Summary |
 | ------ | ------- |
-| [Create(SyntaxList\<TNode>, TextSpan)](Create/README.md) | Creates a new SyntaxListSelection\<TNode> based on the specified list and span\. |
+| [Create(SyntaxList\<TNode>, TextSpan)](Create/README.md) | Creates a new [SyntaxListSelection\<TNode>](./README.md) based on the specified list and span\. |
 | [Equals(Object)](https://docs.microsoft.com/en-us/dotnet/api/system.object.equals) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [First()](First/README.md) | Gets the first selected node\. \(Implements [ISelection\<TNode>.First](../ISelection-1/First/README.md)\) |
 | [GetEnumerator()](GetEnumerator/README.md) | Returns an enumerator that iterates through selected nodes\. |
@@ -64,7 +64,7 @@ public class SyntaxListSelection<TNode> : Roslynator.ISelection<TNode> where TNo
 | [Last()](Last/README.md) | Gets the last selected node\. \(Implements [ISelection\<TNode>.Last](../ISelection-1/Last/README.md)\) |
 | [MemberwiseClone()](https://docs.microsoft.com/en-us/dotnet/api/system.object.memberwiseclone) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [ToString()](https://docs.microsoft.com/en-us/dotnet/api/system.object.tostring) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
-| [TryCreate(SyntaxList\<TNode>, TextSpan, SyntaxListSelection\<TNode>)](TryCreate/README.md) | Creates a new SyntaxListSelection\<TNode> based on the specified list and span\. |
+| [TryCreate(SyntaxList\<TNode>, TextSpan, SyntaxListSelection\<TNode>)](TryCreate/README.md) | Creates a new [SyntaxListSelection\<TNode>](./README.md) based on the specified list and span\. |
 
 ## Explicit Interface Implementations
 

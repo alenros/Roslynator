@@ -8,7 +8,7 @@
 
 ## Summary
 
-Initializes a new instance of the SeparatedSyntaxListSelection\<TNode>\.
+Initializes a new instance of the [SeparatedSyntaxListSelection\<TNode>](../README.md)\.
 
 ```csharp
 protected SeparatedSyntaxListSelection(Microsoft.CodeAnalysis.SeparatedSyntaxList<TNode> list, Microsoft.CodeAnalysis.Text.TextSpan span, int firstIndex, int lastIndex)

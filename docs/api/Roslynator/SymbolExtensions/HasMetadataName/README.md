@@ -8,7 +8,7 @@
 
 ## Summary
 
-Returns true if a symbol has the specified MetadataName\.
+Returns true if a symbol has the specified [MetadataName](../../MetadataName/README.md)\.
 
 ```csharp
 public static bool HasMetadataName(this Microsoft.CodeAnalysis.ISymbol symbol, in Roslynator.MetadataName metadataName)

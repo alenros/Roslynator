@@ -24,5 +24,5 @@ public static Roslynator.ExtensionMethodSymbolInfo GetExtensionMethodInfo(this M
 
 ### Returns
 
-Roslynator\.ExtensionMethodSymbolInfo
+Roslynator\.[ExtensionMethodSymbolInfo](../../../ExtensionMethodSymbolInfo/README.md)
 

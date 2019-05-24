@@ -8,7 +8,7 @@
 
 ## Summary
 
-Get the instance of MetadataNameEqualityComparer\<TSymbol> for the specified **TSymbol**\.
+Get the instance of [MetadataNameEqualityComparer\<TSymbol>](../README.md) for the specified **TSymbol**\.
 
 ```csharp
 public static Roslynator.MetadataNameEqualityComparer<TSymbol> Instance { get; }

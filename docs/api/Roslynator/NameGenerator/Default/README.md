@@ -8,7 +8,7 @@
 
 ## Summary
 
-Default implementation of NameGenerator that adds number suffix to ensure uniqueness\.
+Default implementation of [NameGenerator](../README.md) that adds number suffix to ensure uniqueness\.
 
 ```csharp
 public static Roslynator.NameGenerator Default { get; }

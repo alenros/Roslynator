@@ -32,7 +32,7 @@ public sealed class MetadataNameEqualityComparer<TSymbol> : System.Collections.G
 
 | Property | Summary |
 | -------- | ------- |
-| [Instance](Instance/README.md) | Get the instance of MetadataNameEqualityComparer\<TSymbol> for the specified **TSymbol**\. |
+| [Instance](Instance/README.md) | Get the instance of [MetadataNameEqualityComparer\<TSymbol>](./README.md) for the specified **TSymbol**\. |
 
 ## Methods
 

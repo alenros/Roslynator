@@ -8,7 +8,7 @@
 
 ## Summary
 
-Creates a new TextLineCollectionSelection based on the specified list and span\.
+Creates a new [TextLineCollectionSelection](../README.md) based on the specified list and span\.
 
 ```csharp
 public static bool TryCreate(Microsoft.CodeAnalysis.Text.TextLineCollection lines, Microsoft.CodeAnalysis.Text.TextSpan span, out Roslynator.Text.TextLineCollectionSelection selectedLines)

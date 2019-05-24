@@ -28,7 +28,7 @@ public abstract class NameGenerator
 
 | Property | Summary |
 | -------- | ------- |
-| [Default](Default/README.md) | Default implementation of NameGenerator that adds number suffix to ensure uniqueness\. |
+| [Default](Default/README.md) | Default implementation of [NameGenerator](./README.md) that adds number suffix to ensure uniqueness\. |
 
 ## Methods
 

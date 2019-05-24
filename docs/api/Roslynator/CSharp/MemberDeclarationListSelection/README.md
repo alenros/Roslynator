@@ -16,31 +16,31 @@ public sealed class MemberDeclarationListSelection : Roslynator.SyntaxListSelect
 
 ### Inheritance
 
-[Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) &#x2192; SyntaxListSelection\<TNode> &#x2192; MemberDeclarationListSelection
+[Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) &#x2192; [SyntaxListSelection\<TNode>](../../SyntaxListSelection-1/README.md) &#x2192; MemberDeclarationListSelection
 
 ### Implements
 
 * System\.Collections\.Generic\.[IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)>
 * System\.Collections\.Generic\.[IReadOnlyCollection](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlycollection-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)>
 * System\.Collections\.Generic\.[IReadOnlyList](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)>
-* Roslynator\.ISelection\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)>
+* Roslynator\.[ISelection](../../ISelection-1/README.md)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)>
 
 ## Indexers
 
 | Indexer | Summary |
 | ------- | ------- |
-| Item\[Int32\] |  \(Inherited from SyntaxListSelection\<TNode>\) |
+| [Item\[Int32\]](../../SyntaxListSelection-1/Item/README.md) |  \(Inherited from [SyntaxListSelection\<TNode>](../../SyntaxListSelection-1/README.md)\) |
 
 ## Properties
 
 | Property | Summary |
 | -------- | ------- |
-| Count |  \(Inherited from SyntaxListSelection\<TNode>\) |
-| FirstIndex |  \(Inherited from SyntaxListSelection\<TNode>\) |
-| LastIndex |  \(Inherited from SyntaxListSelection\<TNode>\) |
-| OriginalSpan |  \(Inherited from SyntaxListSelection\<TNode>\) |
+| [Count](../../SyntaxListSelection-1/Count/README.md) |  \(Inherited from [SyntaxListSelection\<TNode>](../../SyntaxListSelection-1/README.md)\) |
+| [FirstIndex](../../SyntaxListSelection-1/FirstIndex/README.md) |  \(Inherited from [SyntaxListSelection\<TNode>](../../SyntaxListSelection-1/README.md)\) |
+| [LastIndex](../../SyntaxListSelection-1/LastIndex/README.md) |  \(Inherited from [SyntaxListSelection\<TNode>](../../SyntaxListSelection-1/README.md)\) |
+| [OriginalSpan](../../SyntaxListSelection-1/OriginalSpan/README.md) |  \(Inherited from [SyntaxListSelection\<TNode>](../../SyntaxListSelection-1/README.md)\) |
 | [Parent](Parent/README.md) | Gets a node that contains selected members\. |
-| UnderlyingList |  \(Inherited from SyntaxListSelection\<TNode>\) |
+| [UnderlyingList](../../SyntaxListSelection-1/UnderlyingList/README.md) |  \(Inherited from [SyntaxListSelection\<TNode>](../../SyntaxListSelection-1/README.md)\) |
 
 ## Methods
 
@@ -50,11 +50,11 @@ public sealed class MemberDeclarationListSelection : Roslynator.SyntaxListSelect
 | [Create(NamespaceDeclarationSyntax, TextSpan)](Create/README.md#Roslynator_CSharp_MemberDeclarationListSelection_Create_Microsoft_CodeAnalysis_CSharp_Syntax_NamespaceDeclarationSyntax_Microsoft_CodeAnalysis_Text_TextSpan_) | Creates a new [MemberDeclarationListSelection](./README.md) based on the specified namespace declaration and span\. |
 | [Create(TypeDeclarationSyntax, TextSpan)](Create/README.md#Roslynator_CSharp_MemberDeclarationListSelection_Create_Microsoft_CodeAnalysis_CSharp_Syntax_TypeDeclarationSyntax_Microsoft_CodeAnalysis_Text_TextSpan_) | Creates a new [MemberDeclarationListSelection](./README.md) based on the specified type declaration and span\. |
 | [Equals(Object)](https://docs.microsoft.com/en-us/dotnet/api/system.object.equals) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
-| First\(\) |  \(Inherited from SyntaxListSelection\<TNode>\) |
-| GetEnumerator\(\) |  \(Inherited from SyntaxListSelection\<TNode>\) |
+| [First()](../../SyntaxListSelection-1/First/README.md) |  \(Inherited from [SyntaxListSelection\<TNode>](../../SyntaxListSelection-1/README.md)\) |
+| [GetEnumerator()](../../SyntaxListSelection-1/GetEnumerator/README.md) |  \(Inherited from [SyntaxListSelection\<TNode>](../../SyntaxListSelection-1/README.md)\) |
 | [GetHashCode()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gethashcode) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [GetType()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gettype) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
-| Last\(\) |  \(Inherited from SyntaxListSelection\<TNode>\) |
+| [Last()](../../SyntaxListSelection-1/Last/README.md) |  \(Inherited from [SyntaxListSelection\<TNode>](../../SyntaxListSelection-1/README.md)\) |
 | [MemberwiseClone()](https://docs.microsoft.com/en-us/dotnet/api/system.object.memberwiseclone) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [ToString()](https://docs.microsoft.com/en-us/dotnet/api/system.object.tostring) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [TryCreate(NamespaceDeclarationSyntax, TextSpan, MemberDeclarationListSelection)](TryCreate/README.md#Roslynator_CSharp_MemberDeclarationListSelection_TryCreate_Microsoft_CodeAnalysis_CSharp_Syntax_NamespaceDeclarationSyntax_Microsoft_CodeAnalysis_Text_TextSpan_Roslynator_CSharp_MemberDeclarationListSelection__) | Creates a new [MemberDeclarationListSelection](./README.md) based on the specified namespace declaration and span\. |
@@ -64,5 +64,5 @@ public sealed class MemberDeclarationListSelection : Roslynator.SyntaxListSelect
 
 | Struct | Summary |
 | ------ | ------- |
-| Enumerator |  \(Inherited from SyntaxListSelection\<TNode>\) |
+| [Enumerator](../../SyntaxListSelection-1/Enumerator/README.md) |  \(Inherited from [SyntaxListSelection\<TNode>](../../SyntaxListSelection-1/README.md)\) |
 

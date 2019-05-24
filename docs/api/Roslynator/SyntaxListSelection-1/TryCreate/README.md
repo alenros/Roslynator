@@ -8,7 +8,7 @@
 
 ## Summary
 
-Creates a new SyntaxListSelection\<TNode> based on the specified list and span\.
+Creates a new [SyntaxListSelection\<TNode>](../README.md) based on the specified list and span\.
 
 ```csharp
 public static bool TryCreate(Microsoft.CodeAnalysis.SyntaxList<TNode> list, Microsoft.CodeAnalysis.Text.TextSpan span, out Roslynator.SyntaxListSelection<TNode> selection)

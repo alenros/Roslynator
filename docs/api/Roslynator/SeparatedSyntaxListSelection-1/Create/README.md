@@ -8,7 +8,7 @@
 
 ## Summary
 
-Creates a new SeparatedSyntaxListSelection\<TNode> based on the specified list and span\.
+Creates a new [SeparatedSyntaxListSelection\<TNode>](../README.md) based on the specified list and span\.
 
 ```csharp
 public static Roslynator.SeparatedSyntaxListSelection<TNode> Create(Microsoft.CodeAnalysis.SeparatedSyntaxList<TNode> list, Microsoft.CodeAnalysis.Text.TextSpan span)
