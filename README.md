@@ -18,46 +18,43 @@
 
 Although Roslynator products are free of charge, any [donation](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BX85UA346VTN6) is welcome and supports further development.
 
+## Extensions for Visual Studio 2019
+
+### Roslynator 2019
+
+* [Roslynator 2019](http://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2019) contains all features - analyzers, refactorings and code fixes for CS diagnostics.
+
 ## Extensions for Visual Studio 2017
 
 ### Roslynator 2017
 
 * [Roslynator 2017](http://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2017) contains all features - analyzers, refactorings and code fixes for CS diagnostics.
 
-### Roslynator Refactorings 2017
-
-* [Roslynator Refactorings 2017](http://marketplace.visualstudio.com/items?itemName=josefpihrt.RoslynatorRefactorings2017) contains all features except analyzers, it is a subset of Roslynator 2017.
-* Use this extension in combination with package [Roslynator.Analyzers](http://www.nuget.org/packages/Roslynator.Analyzers/) or if you are not interested in analyzers at all.
-
 *Note: Roslynator for Visual Studio 2015 is no longer in development.*
 
-## NuGet Packages
+## NuGet Packages with Analyzers
 
-### Roslynator.Analyzers &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.Analyzers.svg)](https://nuget.org/packages/Roslynator.Analyzers)
+| Package | Comment |
+| -------- | ------- |
+| [Roslynator.Analyzers](http://www.nuget.org/packages/Roslynator.Analyzers/) &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.Analyzers.svg)](https://nuget.org/packages/Roslynator.Analyzers) | contains only analyzers |
 
-* Package [Roslynator.Analyzers](http://www.nuget.org/packages/Roslynator.Analyzers/) contains only analyzers.
-* Use this package if you want to integrate analyzers into your build process.
+## Roslynator API
 
-### Roslynator.CodeFixes &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CodeFixes.svg)](https://nuget.org/packages/Roslynator.CodeFixes)
+* Roslynator API is meant be used for development of your own analyzers/refactorings (it does not contain any analyzer/refactorings itself).
+* See [API Reference](docs/api/README.md#_top).
 
-* Package [Roslynator.CodeFixes](http://www.nuget.org/packages/Roslynator.CodeFixes/) contains only code fixes for CS diagnostics.
-* Use this package if you want to distribute these code fixes to your team members.
+| Package | Built on top of |
+| -------- | ------- |
+| [Roslynator.Core](http://www.nuget.org/packages/Roslynator.Core/) &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.Core.svg)](https://nuget.org/packages/Roslynator.Core) | [Microsoft.CodeAnalysis.Common](http://www.nuget.org/packages/Microsoft.CodeAnalysis.Common) |
+| [Roslynator.Workspaces.Core](http://www.nuget.org/packages/Roslynator.Workspaces.Core/) &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.Workspaces.Core.svg)](https://nuget.org/packages/Roslynator.Workspaces) | [Microsoft.CodeAnalysis.Workspaces.Common](http://www.nuget.org/packages/Microsoft.CodeAnalysis.Workspaces.Common) |
+| [Roslynator.CSharp](http://www.nuget.org/packages/Roslynator.CSharp/) &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CSharp.svg)](https://nuget.org/packages/Roslynator.CSharp) | [Microsoft.CodeAnalysis.CSharp](http://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp) |
+| [Roslynator.CSharp.Workspaces](http://www.nuget.org/packages/Roslynator.CSharp.Workspaces/) &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CSharp.Workspaces.svg)](https://nuget.org/packages/Roslynator.CSharp.Workspaces) | [Microsoft.CodeAnalysis.CSharp.Workspaces](http://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp.Workspaces) |
 
-### Roslynator.CSharp &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CSharp.svg)](https://nuget.org/packages/Roslynator.CSharp)
+## Roslynator Command-Line Interface
 
-* Package [Roslynator.CSharp](http://www.nuget.org/packages/Roslynator.CSharp/) is a must-have for Roslyn-based development.
-* It is built on top of Roslyn API (namely [Microsoft.CodeAnalysis.CSharp](http://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp/)).
-<!--* See [API Reference](docs/api/README.md#_top). -->
+* Roslynator CLI is distributed via package [Roslynator.CommandLine](http://www.nuget.org/packages/Roslynator.CommandLine) &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CommandLine.svg)](https://nuget.org/packages/Roslynator.CommandLine)
 
-### Roslynator.CSharp.Workspaces &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CSharp.Workspaces.svg)](https://nuget.org/packages/Roslynator.CSharp.Workspaces)
-
-* Package [Roslynator.CSharp.Workspaces](http://www.nuget.org/packages/Roslynator.CSharp.Workspaces/) is a must-have for Roslyn-based development.
-* It is built on top of Roslyn API (namely [Microsoft.CodeAnalysis.CSharp.Workspaces](http://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp.Workspaces/)).
-<!-- * See [API Reference](docs/api/README.md#_top). -->
-
-### Roslynator.CommandLine &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CommandLine.svg)](https://nuget.org/packages/Roslynator.CommandLine)
-
-* See [Roslynator Command-Line Interface](docs/cli/README.md#_top).
+* See [documentation](docs/cli/README.md#_top).
 
 ## Roslynator for VS Code
 
