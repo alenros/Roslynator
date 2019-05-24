@@ -1,16 +1,13 @@
-# Roslynator\.CSharp\.Workspaces API
+# Roslynator\.CSharp\.Workspaces
 
-## Namespace Roslynator
+[Namespaces](#namespaces) &#x2022; [Static Classes](#static-classes)
 
-### Static Classes
+## Namespaces
 
-* WorkspaceExtensions
+* [Roslynator.CSharp](../../docs/api/Roslynator/CSharp/README.md)
 
-## Namespace Roslynator\.CSharp
+## Static Classes
 
-### Static Classes
-
-* WorkspaceExtensions
-* WorkspaceSyntaxExtensions
-
-*\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*
+* Roslynator\.CSharp\.[SyntaxInverter](../../docs/api/Roslynator/CSharp/SyntaxInverter/README.md)
+* Roslynator\.CSharp\.[WorkspaceExtensions](../../docs/api/Roslynator/CSharp/WorkspaceExtensions/README.md)
+* Roslynator\.CSharp\.[WorkspaceSyntaxExtensions](../../docs/api/Roslynator/CSharp/WorkspaceSyntaxExtensions/README.md)

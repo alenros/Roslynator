@@ -1,0 +1,20 @@
+# SimpleAssignmentStatementInfo\.OperatorToken Property
+
+[Home](../../../../../README.md)
+
+**Containing Type**: Roslynator\.CSharp\.Syntax\.[SimpleAssignmentStatementInfo](../README.md)
+
+**Assembly**: Roslynator\.CSharp\.dll
+
+## Summary
+
+The operator of the simple assignment expression\.
+
+```csharp
+public Microsoft.CodeAnalysis.SyntaxToken OperatorToken { get; }
+```
+
+### Property Value
+
+Microsoft\.CodeAnalysis\.[SyntaxToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtoken)
+

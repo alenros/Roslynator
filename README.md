@@ -27,7 +27,7 @@ Although Roslynator products are free of charge, any [donation](https://www.payp
 
 *Note: Roslynator for Visual Studio 2015 is no longer in development.*
 
-## NuGet Packages with Analyzers
+## NuGet Analyzers
 
 | Package | Version | Comment |
 | --- | --- | --- |
