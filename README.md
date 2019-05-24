@@ -20,8 +20,8 @@ Although Roslynator products are free of charge, any [donation](https://www.payp
 
 ## Extensions for Visual Studio
 
-| Extension | Version | Comment |
-| --- | --- | --- |
+| Extension | Comment |
+| --- | --- |
 | [Roslynator 2019](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2019) | contains all features - analyzers, refactorings and fixes for CS diagnostics. |
 | [Roslynator 2017](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2017) | contains all features - analyzers, refactorings and fixes for CS diagnostics. |
 
@@ -48,7 +48,7 @@ Although Roslynator products are free of charge, any [donation](https://www.payp
 
 ## Roslynator Command-Line Interface
 
-* Roslynator CLI is distributed via package [Roslynator.CommandLine](https://www.nuget.org/packages/Roslynator.CommandLine) &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CommandLine.svg)](https://nuget.org/packages/Roslynator.CommandLine)
+* Roslynator CLI is distributed via &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CommandLine.svg)](https://nuget.org/packages/Roslynator.CommandLine)
 
 * See [documentation](docs/cli/README.md).
 
