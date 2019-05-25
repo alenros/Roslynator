@@ -1,50 +1,7 @@
 ﻿assembly Roslynator.Core, Version=1.0.0.12, Culture=neutral, PublicKeyToken=c84d3703b9146940
-  [AssemblyCompany("Josef Pihrt")]
-  [AssemblyConfiguration("Release")]
-  [AssemblyCopyright("Copyright (c) 2017-2018 Josef Pihrt")]
-  [AssemblyDescription("This library extends functionality of package Microsoft.CodeAnalysis.Common.")]
-  [AssemblyFileVersion("1.0.0.12")]
-  [AssemblyInformationalVersion("1.0.0.12")]
-  [AssemblyProduct("Roslynator.Core")]
-  [AssemblyTitle("Roslynator.Core")]
-  [AssemblyVersion("1.0.0.12")]
-  [TargetFramework(".NETStandard,Version=v1.3", FrameworkDisplayName = "")]
-
 assembly Roslynator.CSharp, Version=1.0.0.12, Culture=neutral, PublicKeyToken=c84d3703b9146940
-  [AssemblyCompany("Josef Pihrt")]
-  [AssemblyConfiguration("Release")]
-  [AssemblyCopyright("Copyright (c) 2017-2018 Josef Pihrt")]
-  [AssemblyDescription("This library extends functionality of package Microsoft.CodeAnalysis.CSharp\n\nCommonly Used Types:\nRoslynator.CSharp.CSharpFactory\nRoslynator.CSharp.CSharpFacts\nRoslynator.CSharp.SyntaxInfo\nRoslynator.NameGenerator")]
-  [AssemblyFileVersion("1.0.0.12")]
-  [AssemblyInformationalVersion("1.0.0.12")]
-  [AssemblyProduct("Roslynator.CSharp")]
-  [AssemblyTitle("Roslynator.CSharp")]
-  [AssemblyVersion("1.0.0.12")]
-  [TargetFramework(".NETStandard,Version=v1.3", FrameworkDisplayName = "")]
-
 assembly Roslynator.CSharp.Workspaces, Version=1.0.0.12, Culture=neutral, PublicKeyToken=c84d3703b9146940
-  [AssemblyCompany("Josef Pihrt")]
-  [AssemblyConfiguration("Release")]
-  [AssemblyCopyright("Copyright (c) 2017-2018 Josef Pihrt")]
-  [AssemblyDescription("This library extends functionality of package Microsoft.CodeAnalysis.CSharp.Workspaces\n\nCommonly Used Types:\nRoslynator.CSharp.CSharpFactory\nRoslynator.CSharp.CSharpFacts\nRoslynator.CSharp.SyntaxInfo\nRoslynator.NameGenerator")]
-  [AssemblyFileVersion("1.0.0.12")]
-  [AssemblyInformationalVersion("1.0.0.12")]
-  [AssemblyProduct("Roslynator.CSharp.Workspaces")]
-  [AssemblyTitle("Roslynator.CSharp.Workspaces")]
-  [AssemblyVersion("1.0.0.12")]
-  [TargetFramework(".NETStandard,Version=v1.3", FrameworkDisplayName = "")]
-
 assembly Roslynator.Workspaces.Core, Version=1.0.0.12, Culture=neutral, PublicKeyToken=c84d3703b9146940
-  [AssemblyCompany("Josef Pihrt")]
-  [AssemblyConfiguration("Release")]
-  [AssemblyCopyright("Copyright (c) 2017-2018 Josef Pihrt")]
-  [AssemblyDescription("This library extends functionality of package Microsoft.CodeAnalysis.Workspaces.Common.")]
-  [AssemblyFileVersion("1.0.0.12")]
-  [AssemblyInformationalVersion("1.0.0.12")]
-  [AssemblyProduct("Roslynator.Workspaces.Core")]
-  [AssemblyTitle("Roslynator.Workspaces.Core")]
-  [AssemblyVersion("1.0.0.12")]
-  [TargetFramework(".NETStandard,Version=v1.3", FrameworkDisplayName = "")]
 
 namespace Roslynator
 
