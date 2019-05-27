@@ -30,8 +30,6 @@ Although Roslynator products are free of charge, any [donation](https://www.payp
 | [Roslynator 2019](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2019) | contains all features - analyzers, refactorings and fixes for CS diagnostics. |
 | [Roslynator 2017](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2017) | contains all features - analyzers, refactorings and fixes for CS diagnostics. |
 
-*Note: Roslynator for Visual Studio 2015 is no longer in development.*
-
 ## NuGet Analyzers
 
 | Package | Version | Comment |
