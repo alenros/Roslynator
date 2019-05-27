@@ -5,7 +5,7 @@ A collection of 500+ [analyzers](src/Analyzers/README.md), [refactorings](src/Re
 ### Features
 
 * [Extensions for Visual Studio](#extensions-for-visual-studio)
-* [NuGet analyzers](#nuget-analyzers)
+* [NuGet Analyzers](#nuget-analyzers)
 * [Roslynator API](#roslynator-api)
 * [Roslynator Command-Line Interface](#roslynator-command-line-interface)
 * [Roslynator for VS Code](#roslynator-for-vs-code)
@@ -53,9 +53,7 @@ Although Roslynator products are free of charge, any [donation](https://www.payp
 
 ## Roslynator Command-Line Interface
 
-* Documentation:
-
-* Roslynator CLI is distributed as NuGet package &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CommandLine.svg)](https://www.nuget.org/packages/Roslynator.CommandLine)
+* Roslynator CLI is distributed via NuGet package [Roslynator.CommandLine](https://www.nuget.org/packages/Roslynator.CommandLine). &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CommandLine.svg)](https://www.nuget.org/packages/Roslynator.CommandLine)
 * See [documentation](docs/cli/README.md).
 
 ## Roslynator for VS Code
