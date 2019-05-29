@@ -50,13 +50,13 @@ namespace Roslynator.CSharp.Analysis
         {
             LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
 
-            if (!leadingAnalysis.Span.IsEmpty)
+            if (!leadingAnalysis.ContainsTaskListItem && !leadingAnalysis.Span.IsEmpty)
             {
-                ReportDiagnostic(context, leadingAnalysis.Span);
+                ReportDiagnostic(context, leadingAnalysis);
                 return;
             }
 
-            if (leadingAnalysis.HasDocumentationComment)
+            if (leadingAnalysis.HasDocumentationComment || (leadingAnalysis.ContainsTaskListItem && leadingAnalysis.ContainsNonTaskListItem))
                 return;
 
             var namespaceDeclaration = (NamespaceDeclarationSyntax)context.Node;
@@ -64,20 +64,20 @@ namespace Roslynator.CSharp.Analysis
             TrailingAnalysis trailingAnalysis = AnalyzeTrailingTrivia(namespaceDeclaration.Name);
 
             if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+                ReportDiagnostic(context, trailingAnalysis);
         }
 
         private static void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
         {
             LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
 
-            if (!leadingAnalysis.Span.IsEmpty)
+            if (!leadingAnalysis.ContainsTaskListItem && !leadingAnalysis.Span.IsEmpty)
             {
-                ReportDiagnostic(context, leadingAnalysis.Span);
+                ReportDiagnostic(context, leadingAnalysis);
                 return;
             }
 
-            if (leadingAnalysis.HasDocumentationComment)
+            if (leadingAnalysis.HasDocumentationComment || (leadingAnalysis.ContainsTaskListItem && leadingAnalysis.ContainsNonTaskListItem))
                 return;
 
             var classDeclaration = (ClassDeclarationSyntax)context.Node;
@@ -87,36 +87,63 @@ namespace Roslynator.CSharp.Analysis
             if (trailingAnalysis.ContainsEndOfLine)
                 return;
 
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(classDeclaration.TypeParameterList);
+            if (!trailingAnalysis.Span.IsEmpty)
+            {
+                ReportDiagnostic(context, trailingAnalysis);
+                return;
+            }
+
+            trailingAnalysis = AnalyzeTrailingTrivia(classDeclaration.TypeParameterList);
 
             if (trailingAnalysis.ContainsEndOfLine)
                 return;
-
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(classDeclaration.BaseList);
-
-            if (trailingAnalysis.ContainsEndOfLine)
-                return;
-
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(classDeclaration.ConstraintClauses);
 
             if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+            {
+                ReportDiagnostic(context, trailingAnalysis);
+                return;
+            }
+
+            trailingAnalysis = AnalyzeTrailingTrivia(classDeclaration.BaseList);
+
+            if (trailingAnalysis.ContainsEndOfLine)
+                return;
+
+            if (!trailingAnalysis.Span.IsEmpty)
+            {
+                ReportDiagnostic(context, trailingAnalysis);
+                return;
+            }
+
+            foreach (TypeParameterConstraintClauseSyntax constraintClause in classDeclaration.ConstraintClauses)
+            {
+                trailingAnalysis = AnalyzeTrailingTrivia(constraintClause);
+
+                if (trailingAnalysis.ContainsEndOfLine)
+                    return;
+
+                if (!trailingAnalysis.Span.IsEmpty)
+                {
+                    ReportDiagnostic(context, trailingAnalysis);
+                    return;
+                }
+            }
+
+            if (!trailingAnalysis.Span.IsEmpty)
+                ReportDiagnostic(context, trailingAnalysis);
         }
 
         private static void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
         {
             LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
 
-            if (!leadingAnalysis.Span.IsEmpty)
+            if (!leadingAnalysis.ContainsTaskListItem && !leadingAnalysis.Span.IsEmpty)
             {
-                ReportDiagnostic(context, leadingAnalysis.Span);
+                ReportDiagnostic(context, leadingAnalysis);
                 return;
             }
 
-            if (leadingAnalysis.HasDocumentationComment)
+            if (leadingAnalysis.HasDocumentationComment || (leadingAnalysis.ContainsTaskListItem && leadingAnalysis.ContainsNonTaskListItem))
                 return;
 
             var structDeclaration = (StructDeclarationSyntax)context.Node;
@@ -126,36 +153,63 @@ namespace Roslynator.CSharp.Analysis
             if (trailingAnalysis.ContainsEndOfLine)
                 return;
 
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(structDeclaration.TypeParameterList);
+            if (!trailingAnalysis.Span.IsEmpty)
+            {
+                ReportDiagnostic(context, trailingAnalysis);
+                return;
+            }
+
+            trailingAnalysis = AnalyzeTrailingTrivia(structDeclaration.TypeParameterList);
 
             if (trailingAnalysis.ContainsEndOfLine)
                 return;
-
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(structDeclaration.BaseList);
-
-            if (trailingAnalysis.ContainsEndOfLine)
-                return;
-
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(structDeclaration.ConstraintClauses);
 
             if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+            {
+                ReportDiagnostic(context, trailingAnalysis);
+                return;
+            }
+
+            trailingAnalysis = AnalyzeTrailingTrivia(structDeclaration.BaseList);
+
+            if (trailingAnalysis.ContainsEndOfLine)
+                return;
+
+            if (!trailingAnalysis.Span.IsEmpty)
+            {
+                ReportDiagnostic(context, trailingAnalysis);
+                return;
+            }
+
+            foreach (TypeParameterConstraintClauseSyntax constraintClause in structDeclaration.ConstraintClauses)
+            {
+                trailingAnalysis = AnalyzeTrailingTrivia(constraintClause);
+
+                if (trailingAnalysis.ContainsEndOfLine)
+                    return;
+
+                if (!trailingAnalysis.Span.IsEmpty)
+                {
+                    ReportDiagnostic(context, trailingAnalysis);
+                    return;
+                }
+            }
+
+            if (!trailingAnalysis.Span.IsEmpty)
+                ReportDiagnostic(context, trailingAnalysis);
         }
 
         private static void AnalyzeInterfaceDeclaration(SyntaxNodeAnalysisContext context)
         {
             LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
 
-            if (!leadingAnalysis.Span.IsEmpty)
+            if (!leadingAnalysis.ContainsTaskListItem && !leadingAnalysis.Span.IsEmpty)
             {
-                ReportDiagnostic(context, leadingAnalysis.Span);
+                ReportDiagnostic(context, leadingAnalysis);
                 return;
             }
 
-            if (leadingAnalysis.HasDocumentationComment)
+            if (leadingAnalysis.HasDocumentationComment || (leadingAnalysis.ContainsTaskListItem && leadingAnalysis.ContainsNonTaskListItem))
                 return;
 
             var interfaceDeclaration = (InterfaceDeclarationSyntax)context.Node;
@@ -165,36 +219,63 @@ namespace Roslynator.CSharp.Analysis
             if (trailingAnalysis.ContainsEndOfLine)
                 return;
 
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(interfaceDeclaration.TypeParameterList);
+            if (!trailingAnalysis.Span.IsEmpty)
+            {
+                ReportDiagnostic(context, trailingAnalysis);
+                return;
+            }
+
+            trailingAnalysis = AnalyzeTrailingTrivia(interfaceDeclaration.TypeParameterList);
 
             if (trailingAnalysis.ContainsEndOfLine)
                 return;
-
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(interfaceDeclaration.BaseList);
-
-            if (trailingAnalysis.ContainsEndOfLine)
-                return;
-
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(interfaceDeclaration.ConstraintClauses);
 
             if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+            {
+                ReportDiagnostic(context, trailingAnalysis);
+                return;
+            }
+
+            trailingAnalysis = AnalyzeTrailingTrivia(interfaceDeclaration.BaseList);
+
+            if (trailingAnalysis.ContainsEndOfLine)
+                return;
+
+            if (!trailingAnalysis.Span.IsEmpty)
+            {
+                ReportDiagnostic(context, trailingAnalysis);
+                return;
+            }
+
+            foreach (TypeParameterConstraintClauseSyntax constraintClause in interfaceDeclaration.ConstraintClauses)
+            {
+                trailingAnalysis = AnalyzeTrailingTrivia(constraintClause);
+
+                if (trailingAnalysis.ContainsEndOfLine)
+                    return;
+
+                if (!trailingAnalysis.Span.IsEmpty)
+                {
+                    ReportDiagnostic(context, trailingAnalysis);
+                    return;
+                }
+            }
+
+            if (!trailingAnalysis.Span.IsEmpty)
+                ReportDiagnostic(context, trailingAnalysis);
         }
 
         private static void AnalyzeEnumDeclaration(SyntaxNodeAnalysisContext context)
         {
             LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
 
-            if (!leadingAnalysis.Span.IsEmpty)
+            if (!leadingAnalysis.ContainsTaskListItem && !leadingAnalysis.Span.IsEmpty)
             {
-                ReportDiagnostic(context, leadingAnalysis.Span);
+                ReportDiagnostic(context, leadingAnalysis);
                 return;
             }
 
-            if (leadingAnalysis.HasDocumentationComment)
+            if (leadingAnalysis.HasDocumentationComment || (leadingAnalysis.ContainsTaskListItem && leadingAnalysis.ContainsNonTaskListItem))
                 return;
 
             var enumDeclaration = (EnumDeclarationSyntax)context.Node;
@@ -202,20 +283,20 @@ namespace Roslynator.CSharp.Analysis
             TrailingAnalysis trailingAnalysis = AnalyzeTrailingTrivia(enumDeclaration.Identifier);
 
             if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+                ReportDiagnostic(context, trailingAnalysis);
         }
 
         private static void AnalyzeEnumMemberDeclaration(SyntaxNodeAnalysisContext context)
         {
             LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
 
-            if (!leadingAnalysis.Span.IsEmpty)
+            if (!leadingAnalysis.ContainsTaskListItem && !leadingAnalysis.Span.IsEmpty)
             {
-                ReportDiagnostic(context, leadingAnalysis.Span);
+                ReportDiagnostic(context, leadingAnalysis);
                 return;
             }
 
-            if (leadingAnalysis.HasDocumentationComment)
+            if (leadingAnalysis.HasDocumentationComment || (leadingAnalysis.ContainsTaskListItem && leadingAnalysis.ContainsNonTaskListItem))
                 return;
 
             var enumMemberDeclaration = (EnumMemberDeclarationSyntax)context.Node;
@@ -223,20 +304,20 @@ namespace Roslynator.CSharp.Analysis
             TrailingAnalysis trailingAnalysis = AnalyzeTrailingTrivia(enumMemberDeclaration);
 
             if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+                ReportDiagnostic(context, trailingAnalysis);
         }
 
         private static void AnalyzeDelegateDeclaration(SyntaxNodeAnalysisContext context)
         {
             LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
 
-            if (!leadingAnalysis.Span.IsEmpty)
+            if (!leadingAnalysis.ContainsTaskListItem && !leadingAnalysis.Span.IsEmpty)
             {
-                ReportDiagnostic(context, leadingAnalysis.Span);
+                ReportDiagnostic(context, leadingAnalysis);
                 return;
             }
 
-            if (leadingAnalysis.HasDocumentationComment)
+            if (leadingAnalysis.HasDocumentationComment || (leadingAnalysis.ContainsTaskListItem && leadingAnalysis.ContainsNonTaskListItem))
                 return;
 
             var delegateDeclaration = (DelegateDeclarationSyntax)context.Node;
@@ -244,20 +325,20 @@ namespace Roslynator.CSharp.Analysis
             TrailingAnalysis trailingAnalysis = AnalyzeTrailingTrivia(delegateDeclaration);
 
             if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+                ReportDiagnostic(context, trailingAnalysis);
         }
 
         private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
             LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
 
-            if (!leadingAnalysis.Span.IsEmpty)
+            if (!leadingAnalysis.ContainsTaskListItem && !leadingAnalysis.Span.IsEmpty)
             {
-                ReportDiagnostic(context, leadingAnalysis.Span);
+                ReportDiagnostic(context, leadingAnalysis);
                 return;
             }
 
-            if (leadingAnalysis.HasDocumentationComment)
+            if (leadingAnalysis.HasDocumentationComment || (leadingAnalysis.ContainsTaskListItem && leadingAnalysis.ContainsNonTaskListItem))
                 return;
 
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
@@ -269,10 +350,16 @@ namespace Roslynator.CSharp.Analysis
 
             if (trailingAnalysis.Span.IsEmpty)
             {
-                trailingAnalysis = AnalyzeTrailingTrivia(methodDeclaration.ConstraintClauses);
+                foreach (TypeParameterConstraintClauseSyntax constraintClause in methodDeclaration.ConstraintClauses)
+                {
+                    trailingAnalysis = AnalyzeTrailingTrivia(constraintClause);
 
-                if (trailingAnalysis.ContainsEndOfLine)
-                    return;
+                    if (trailingAnalysis.ContainsEndOfLine)
+                        return;
+
+                    if (!trailingAnalysis.Span.IsEmpty)
+                        break;
+                }
 
                 if (trailingAnalysis.Span.IsEmpty)
                 {
@@ -288,24 +375,29 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(methodDeclaration);
+            if (!trailingAnalysis.Span.IsEmpty)
+            {
+                ReportDiagnostic(context, trailingAnalysis);
+                return;
+            }
+
+            trailingAnalysis = AnalyzeTrailingTrivia(methodDeclaration);
 
             if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+                ReportDiagnostic(context, trailingAnalysis);
         }
 
         private static void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
         {
             LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
 
-            if (!leadingAnalysis.Span.IsEmpty)
+            if (!leadingAnalysis.ContainsTaskListItem && !leadingAnalysis.Span.IsEmpty)
             {
-                ReportDiagnostic(context, leadingAnalysis.Span);
+                ReportDiagnostic(context, leadingAnalysis);
                 return;
             }
 
-            if (leadingAnalysis.HasDocumentationComment)
+            if (leadingAnalysis.HasDocumentationComment || (leadingAnalysis.ContainsTaskListItem && leadingAnalysis.ContainsNonTaskListItem))
                 return;
 
             var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
@@ -336,24 +428,29 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(constructorDeclaration);
+            if (!trailingAnalysis.Span.IsEmpty)
+            {
+                ReportDiagnostic(context, trailingAnalysis);
+                return;
+            }
+
+            trailingAnalysis = AnalyzeTrailingTrivia(constructorDeclaration);
 
             if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+                ReportDiagnostic(context, trailingAnalysis);
         }
 
         private static void AnalyzeDestructorDeclaration(SyntaxNodeAnalysisContext context)
         {
             LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
 
-            if (!leadingAnalysis.Span.IsEmpty)
+            if (!leadingAnalysis.ContainsTaskListItem && !leadingAnalysis.Span.IsEmpty)
             {
-                ReportDiagnostic(context, leadingAnalysis.Span);
+                ReportDiagnostic(context, leadingAnalysis);
                 return;
             }
 
-            if (leadingAnalysis.HasDocumentationComment)
+            if (leadingAnalysis.HasDocumentationComment || (leadingAnalysis.ContainsTaskListItem && leadingAnalysis.ContainsNonTaskListItem))
                 return;
 
             var destructorDeclaration = (DestructorDeclarationSyntax)context.Node;
@@ -376,24 +473,29 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(destructorDeclaration);
+            if (!trailingAnalysis.Span.IsEmpty)
+            {
+                ReportDiagnostic(context, trailingAnalysis);
+                return;
+            }
+
+            trailingAnalysis = AnalyzeTrailingTrivia(destructorDeclaration);
 
             if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+                ReportDiagnostic(context, trailingAnalysis);
         }
 
         private static void AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
             LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
 
-            if (!leadingAnalysis.Span.IsEmpty)
+            if (!leadingAnalysis.ContainsTaskListItem && !leadingAnalysis.Span.IsEmpty)
             {
-                ReportDiagnostic(context, leadingAnalysis.Span);
+                ReportDiagnostic(context, leadingAnalysis);
                 return;
             }
 
-            if (leadingAnalysis.HasDocumentationComment)
+            if (leadingAnalysis.HasDocumentationComment || (leadingAnalysis.ContainsTaskListItem && leadingAnalysis.ContainsNonTaskListItem))
                 return;
 
             var operatorDeclaration = (OperatorDeclarationSyntax)context.Node;
@@ -416,24 +518,29 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(operatorDeclaration);
+            if (!trailingAnalysis.Span.IsEmpty)
+            {
+                ReportDiagnostic(context, trailingAnalysis);
+                return;
+            }
+
+            trailingAnalysis = AnalyzeTrailingTrivia(operatorDeclaration);
 
             if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+                ReportDiagnostic(context, trailingAnalysis);
         }
 
         private static void AnalyzeConversionOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
             LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
 
-            if (!leadingAnalysis.Span.IsEmpty)
+            if (!leadingAnalysis.ContainsTaskListItem && !leadingAnalysis.Span.IsEmpty)
             {
-                ReportDiagnostic(context, leadingAnalysis.Span);
+                ReportDiagnostic(context, leadingAnalysis);
                 return;
             }
 
-            if (leadingAnalysis.HasDocumentationComment)
+            if (leadingAnalysis.HasDocumentationComment || (leadingAnalysis.ContainsTaskListItem && leadingAnalysis.ContainsNonTaskListItem))
                 return;
 
             var conversionOperatorDeclaration = (ConversionOperatorDeclarationSyntax)context.Node;
@@ -456,24 +563,29 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(conversionOperatorDeclaration);
+            if (!trailingAnalysis.Span.IsEmpty)
+            {
+                ReportDiagnostic(context, trailingAnalysis);
+                return;
+            }
+
+            trailingAnalysis = AnalyzeTrailingTrivia(conversionOperatorDeclaration);
 
             if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+                ReportDiagnostic(context, trailingAnalysis);
         }
 
         private static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
             LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
 
-            if (!leadingAnalysis.Span.IsEmpty)
+            if (!leadingAnalysis.ContainsTaskListItem && !leadingAnalysis.Span.IsEmpty)
             {
-                ReportDiagnostic(context, leadingAnalysis.Span);
+                ReportDiagnostic(context, leadingAnalysis);
                 return;
             }
 
-            if (leadingAnalysis.HasDocumentationComment)
+            if (leadingAnalysis.HasDocumentationComment || (leadingAnalysis.ContainsTaskListItem && leadingAnalysis.ContainsNonTaskListItem))
                 return;
 
             var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
@@ -496,24 +608,29 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(propertyDeclaration);
+            if (!trailingAnalysis.Span.IsEmpty)
+            {
+                ReportDiagnostic(context, trailingAnalysis);
+                return;
+            }
+
+            trailingAnalysis = AnalyzeTrailingTrivia(propertyDeclaration);
 
             if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+                ReportDiagnostic(context, trailingAnalysis);
         }
 
         private static void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
         {
             LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
 
-            if (!leadingAnalysis.Span.IsEmpty)
+            if (!leadingAnalysis.ContainsTaskListItem && !leadingAnalysis.Span.IsEmpty)
             {
-                ReportDiagnostic(context, leadingAnalysis.Span);
+                ReportDiagnostic(context, leadingAnalysis);
                 return;
             }
 
-            if (leadingAnalysis.HasDocumentationComment)
+            if (leadingAnalysis.HasDocumentationComment || (leadingAnalysis.ContainsTaskListItem && leadingAnalysis.ContainsNonTaskListItem))
                 return;
 
             var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
@@ -536,24 +653,29 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(indexerDeclaration);
+            if (!trailingAnalysis.Span.IsEmpty)
+            {
+                ReportDiagnostic(context, trailingAnalysis);
+                return;
+            }
+
+            trailingAnalysis = AnalyzeTrailingTrivia(indexerDeclaration);
 
             if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+                ReportDiagnostic(context, trailingAnalysis);
         }
 
         private static void AnalyzeFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
             LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
 
-            if (!leadingAnalysis.Span.IsEmpty)
+            if (!leadingAnalysis.ContainsTaskListItem && !leadingAnalysis.Span.IsEmpty)
             {
-                ReportDiagnostic(context, leadingAnalysis.Span);
+                ReportDiagnostic(context, leadingAnalysis);
                 return;
             }
 
-            if (leadingAnalysis.HasDocumentationComment)
+            if (leadingAnalysis.HasDocumentationComment || (leadingAnalysis.ContainsTaskListItem && leadingAnalysis.ContainsNonTaskListItem))
                 return;
 
             var fieldDeclaration = (FieldDeclarationSyntax)context.Node;
@@ -561,20 +683,20 @@ namespace Roslynator.CSharp.Analysis
             TrailingAnalysis trailingAnalysis = AnalyzeTrailingTrivia(fieldDeclaration);
 
             if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+                ReportDiagnostic(context, trailingAnalysis);
         }
 
         private static void AnalyzeEventFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
             LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
 
-            if (!leadingAnalysis.Span.IsEmpty)
+            if (!leadingAnalysis.ContainsTaskListItem && !leadingAnalysis.Span.IsEmpty)
             {
-                ReportDiagnostic(context, leadingAnalysis.Span);
+                ReportDiagnostic(context, leadingAnalysis);
                 return;
             }
 
-            if (leadingAnalysis.HasDocumentationComment)
+            if (leadingAnalysis.HasDocumentationComment || (leadingAnalysis.ContainsTaskListItem && leadingAnalysis.ContainsNonTaskListItem))
                 return;
 
             var eventFieldDeclaration = (EventFieldDeclarationSyntax)context.Node;
@@ -582,20 +704,20 @@ namespace Roslynator.CSharp.Analysis
             TrailingAnalysis trailingAnalysis = AnalyzeTrailingTrivia(eventFieldDeclaration);
 
             if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+                ReportDiagnostic(context, trailingAnalysis);
         }
 
         private static void AnalyzeEventDeclaration(SyntaxNodeAnalysisContext context)
         {
             LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
 
-            if (!leadingAnalysis.Span.IsEmpty)
+            if (!leadingAnalysis.ContainsTaskListItem && !leadingAnalysis.Span.IsEmpty)
             {
-                ReportDiagnostic(context, leadingAnalysis.Span);
+                ReportDiagnostic(context, leadingAnalysis);
                 return;
             }
 
-            if (leadingAnalysis.HasDocumentationComment)
+            if (leadingAnalysis.HasDocumentationComment || (leadingAnalysis.ContainsTaskListItem && leadingAnalysis.ContainsNonTaskListItem))
                 return;
 
             var eventDeclaration = (EventDeclarationSyntax)context.Node;
@@ -605,11 +727,26 @@ namespace Roslynator.CSharp.Analysis
             if (trailingAnalysis.ContainsEndOfLine)
                 return;
 
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(eventDeclaration.AccessorList);
+            if (!trailingAnalysis.Span.IsEmpty)
+            {
+                ReportDiagnostic(context, trailingAnalysis);
+                return;
+            }
+
+            trailingAnalysis = AnalyzeTrailingTrivia(eventDeclaration.AccessorList);
 
             if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+                ReportDiagnostic(context, trailingAnalysis);
+        }
+
+        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, LeadingAnalysis leadingAnalysis)
+        {
+            ReportDiagnostic(context, leadingAnalysis.Span);
+        }
+
+        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, TrailingAnalysis trailingAnalysis)
+        {
+            ReportDiagnostic(context, trailingAnalysis.Span);
         }
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, TextSpan span)
