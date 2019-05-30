@@ -102,22 +102,9 @@ namespace Roslynator.CSharp.Analysis
             return new LeadingAnalysis(span, false, containsTaskListItem, containsNonTaskListItem);
         }
 
-        public static TrailingAnalysis AnalyzeTrailingTrivia(SyntaxNode declaration)
+        public static TrailingAnalysis AnalyzeTrailingTrivia(SyntaxNodeOrToken nodeOrToken)
         {
-            if (declaration == null)
-                return default;
-
-            return AnalyzeTrailingTrivia(declaration.GetTrailingTrivia());
-        }
-
-        public static TrailingAnalysis AnalyzeTrailingTrivia(SyntaxToken token)
-        {
-            return AnalyzeTrailingTrivia(token.TrailingTrivia);
-        }
-
-        public static TrailingAnalysis AnalyzeTrailingTrivia(SyntaxTriviaList trailingTrivia)
-        {
-            SyntaxTriviaList.Enumerator en = trailingTrivia.GetEnumerator();
+            SyntaxTriviaList.Enumerator en = nodeOrToken.GetTrailingTrivia().GetEnumerator();
 
             if (en.MoveNext())
             {

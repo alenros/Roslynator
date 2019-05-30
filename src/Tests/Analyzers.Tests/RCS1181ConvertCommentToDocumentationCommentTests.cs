@@ -117,6 +117,44 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+        public async Task Test_TrailingComment_EnumMember()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+enum E
+{
+    A = 0 [|//x|]
+}
+", @"
+enum E
+{
+    /// <summary>
+    /// x
+    /// </summary>
+    A = 0
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+        public async Task Test_TrailingComment_EnumMemberComma()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+enum E
+{
+    A = 0, [|//x|]
+}
+", @"
+enum E
+{
+    /// <summary>
+    /// x
+    /// </summary>
+    A = 0,
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
         public async Task Test_LeadingTodoCommentTrailingComment()
         {
             await VerifyDiagnosticAndFixAsync(@"
