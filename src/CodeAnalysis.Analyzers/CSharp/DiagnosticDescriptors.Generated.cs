@@ -34,18 +34,18 @@ namespace Roslynator.CodeAnalysis.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>ROS0003</summary>
-        public static readonly DiagnosticDescriptor RedundantConditionalAccess = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.RedundantConditionalAccess, 
-            title:              "Redundant conditional access.", 
-            messageFormat:      "Redundant conditional access.", 
+        public static readonly DiagnosticDescriptor UnnecessaryConditionalAccess = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UnnecessaryConditionalAccess, 
+            title:              "Unnecessary conditional access.", 
+            messageFormat:      "Unnecessary conditional access.", 
             category:           DiagnosticCategories.Performance, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.RedundantConditionalAccess}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UnnecessaryConditionalAccess}", 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
-        public static readonly DiagnosticDescriptor RedundantConditionalAccessFadeOut = RedundantConditionalAccess.CreateFadeOut();
+        public static readonly DiagnosticDescriptor UnnecessaryConditionalAccessFadeOut = UnnecessaryConditionalAccess.CreateFadeOut();
 
         /// <summary>ROS0004</summary>
         public static readonly DiagnosticDescriptor UsePatternMatching = new DiagnosticDescriptor(
@@ -60,15 +60,15 @@ namespace Roslynator.CodeAnalysis.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>ROS0005</summary>
-        public static readonly DiagnosticDescriptor CallAnyInsteadOfUsingCount = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.CallAnyInsteadOfUsingCount, 
-            title:              "Call 'Any' instead of using 'Count'.", 
-            messageFormat:      "Call 'Any' instead of using 'Count'.", 
+        public static readonly DiagnosticDescriptor CallAnyInsteadOfAccessingCount = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount, 
+            title:              "Call 'Any' instead of accessing 'Count'.", 
+            messageFormat:      "Call 'Any' instead of accessing 'Count'.", 
             category:           DiagnosticCategories.Performance, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.CallAnyInsteadOfUsingCount}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>ROS0006</summary>

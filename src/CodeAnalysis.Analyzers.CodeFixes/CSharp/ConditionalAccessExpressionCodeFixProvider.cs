@@ -12,13 +12,13 @@ using Roslynator.CSharp;
 
 namespace Roslynator.CodeAnalysis.CSharp
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ConditionalAccessCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ConditionalAccessExpressionCodeFixProvider))]
     [Shared]
-    public class ConditionalAccessCodeFixProvider : BaseCodeFixProvider
+    public class ConditionalAccessExpressionCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.RedundantConditionalAccess); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.UnnecessaryConditionalAccess); }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -32,14 +32,14 @@ namespace Roslynator.CodeAnalysis.CSharp
             Diagnostic diagnostic = context.Diagnostics[0];
 
             CodeAction codeAction = CodeAction.Create(
-                "Remove redundant '?'",
-                ct => RemoveRedundantConditionalAccessAsync(document, conditionalAccess, ct),
-                base.GetEquivalenceKey(diagnostic));
+                "Remove unnecessary '?'",
+                ct => RemoveUnnecessaryConditionalAccessAsync(document, conditionalAccess, ct),
+                GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);
         }
 
-        private static Task<Document> RemoveRedundantConditionalAccessAsync(
+        private static Task<Document> RemoveUnnecessaryConditionalAccessAsync(
             Document document,
             ConditionalAccessExpressionSyntax conditionalAccess,
             CancellationToken cancellationToken)

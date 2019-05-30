@@ -26,7 +26,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.UsePropertySyntaxNodeRawKind,
-                    DiagnosticIdentifiers.CallAnyInsteadOfUsingCount,
+                    DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount,
                     DiagnosticIdentifiers.UnnecessaryNullCheck);
             }
         }
@@ -53,10 +53,10 @@ namespace Roslynator.CodeAnalysis.CSharp
                         context.RegisterCodeFix(codeAction, diagnostic);
                         break;
                     }
-                case DiagnosticIdentifiers.CallAnyInsteadOfUsingCount:
+                case DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            "Call 'Any' instead of 'Count'",
+                            "Call 'Any' instead of accessing 'Count'",
                             ct => CallAnyInsteadOfUsingCountAsync(document, binaryExpression, ct),
                             GetEquivalenceKey(diagnostic));
 

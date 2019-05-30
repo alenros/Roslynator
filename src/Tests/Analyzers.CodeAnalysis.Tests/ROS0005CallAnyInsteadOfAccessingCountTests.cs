@@ -8,15 +8,15 @@ using Xunit;
 
 namespace Roslynator.CodeAnalysis.CSharp.Tests
 {
-    public class ROS0005CallAnyInsteadOfUsingCountTests : AbstractCSharpFixVerifier
+    public class ROS0005CallAnyInsteadOfAccessingCountTests : AbstractCSharpFixVerifier
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.CallAnyInsteadOfUsingCount;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.CallAnyInsteadOfAccessingCount;
 
         public override DiagnosticAnalyzer Analyzer { get; } = new SimpleMemberAccessExpressionAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new BinaryExpressionCodeFixProvider();
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfUsingCount)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
         public async Task Test_SyntaxList_Equals()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -46,7 +46,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfUsingCount)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
         public async Task Test_SyntaxList_Equals2()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -76,7 +76,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfUsingCount)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
         public async Task Test_SyntaxList_NotEquals()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -106,7 +106,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfUsingCount)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
         public async Task Test_SyntaxList_GreaterThan()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -136,7 +136,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfUsingCount)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
         public async Task Test_SeparatedSyntaxList_GreaterThan()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -166,7 +166,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfUsingCount)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
         public async Task Test_SyntaxTokenList_GreaterThan()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -196,7 +196,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfUsingCount)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
         public async Task Test_SyntaxTriviaList_GreaterThan()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -226,7 +226,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfUsingCount)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
         public async Task Test_ChildSyntaxList_GreaterThan()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -256,7 +256,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfUsingCount)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
         public async Task Test_SyntaxNodeOrTokenList_GreaterThan()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -286,7 +286,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfUsingCount)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
         public async Task TestNoDiagnostic_LessThanExpression()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -304,7 +304,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfUsingCount)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
         public async Task TestNoDiagnostic_NotNumericLiteralExpression()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -323,7 +323,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfUsingCount)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
         public async Task TestNoDiagnostic_NotZeroNumericLiteralExpression()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -341,7 +341,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfUsingCount)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
         public async Task TestNoDiagnostic_NotSyntaxList()
         {
             await VerifyNoDiagnosticAsync(@"

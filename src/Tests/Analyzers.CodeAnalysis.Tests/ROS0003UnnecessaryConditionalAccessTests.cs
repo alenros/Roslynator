@@ -8,15 +8,15 @@ using Xunit;
 
 namespace Roslynator.CodeAnalysis.CSharp.Tests
 {
-    public class ROS0003RedundantConditionalAccessTests : AbstractCSharpFixVerifier
+    public class ROS0003UnnecessaryConditionalAccessTests : AbstractCSharpFixVerifier
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RedundantConditionalAccess;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UnnecessaryConditionalAccess;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new RedundantConditionalAccessAnalyzer();
+        public override DiagnosticAnalyzer Analyzer { get; } = new UnnecessaryConditionalAccessAnalyzer();
 
-        public override CodeFixProvider FixProvider { get; } = new ConditionalAccessCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new ConditionalAccessExpressionCodeFixProvider();
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RedundantConditionalAccess)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryConditionalAccess)]
         public async Task Test()
         {
             await VerifyDiagnosticAndFixAsync(@"

@@ -36,10 +36,10 @@
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RedundantConditionalAccess">
+  <Analyzer Identifier="UnnecessaryConditionalAccess">
     <Id>ROS0003</Id>
-    <Title>Redundant conditional access.</Title>
-    <MessageFormat>Redundant conditional access.</MessageFormat>
+    <Title>Unnecessary conditional access.</Title>
+    <MessageFormat>Unnecessary conditional access.</MessageFormat>
     <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -86,10 +86,10 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="CallAnyInsteadOfUsingCount">
+  <Analyzer Identifier="CallAnyInsteadOfAccessingCount">
     <Id>ROS0005</Id>
-    <Title>Call 'Any' instead of using 'Count'.</Title>
-    <MessageFormat>Call 'Any' instead of using 'Count'.</MessageFormat>
+    <Title>Call 'Any' instead of accessing 'Count'.</Title>
+    <MessageFormat>Call 'Any' instead of accessing 'Count'.</MessageFormat>
     <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>

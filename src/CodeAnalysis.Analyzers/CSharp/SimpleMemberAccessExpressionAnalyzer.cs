@@ -21,7 +21,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.UsePropertySyntaxNodeSpanStart,
-                    DiagnosticDescriptors.CallAnyInsteadOfUsingCount);
+                    DiagnosticDescriptors.CallAnyInsteadOfAccessingCount);
             }
         }
 
@@ -133,7 +133,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                     ? TextSpan.FromBounds(name.SpanStart, numericLiteralExpression.Span.End)
                     : TextSpan.FromBounds(numericLiteralExpression.SpanStart, name.Span.End);
 
-                context.ReportDiagnostic(DiagnosticDescriptors.CallAnyInsteadOfUsingCount, Location.Create(memberAccessExpression.SyntaxTree, span));
+                context.ReportDiagnostic(DiagnosticDescriptors.CallAnyInsteadOfAccessingCount, Location.Create(memberAccessExpression.SyntaxTree, span));
             }
         }
     }

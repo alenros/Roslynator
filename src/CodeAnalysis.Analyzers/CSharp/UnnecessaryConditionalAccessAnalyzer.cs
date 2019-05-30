@@ -12,15 +12,15 @@ using Roslynator.CSharp.Syntax;
 namespace Roslynator.CodeAnalysis.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class RedundantConditionalAccessAnalyzer : BaseDiagnosticAnalyzer
+    public class UnnecessaryConditionalAccessAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.RedundantConditionalAccess,
-                    DiagnosticDescriptors.RedundantConditionalAccessFadeOut);
+                    DiagnosticDescriptors.UnnecessaryConditionalAccess,
+                    DiagnosticDescriptors.UnnecessaryConditionalAccessFadeOut);
             }
         }
 
@@ -106,8 +106,8 @@ namespace Roslynator.CodeAnalysis.CSharp
             if (!parameters[1].Type.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_CSharp_SyntaxKind))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.RedundantConditionalAccess, conditionalAccess.OperatorToken);
-            context.ReportDiagnostic(DiagnosticDescriptors.RedundantConditionalAccessFadeOut, binaryExpression.Right);
+            context.ReportDiagnostic(DiagnosticDescriptors.UnnecessaryConditionalAccess, conditionalAccess.OperatorToken);
+            context.ReportDiagnostic(DiagnosticDescriptors.UnnecessaryConditionalAccessFadeOut, binaryExpression.Right);
         }
     }
 }
