@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using System.Collections.Generic;
 
 namespace Roslynator.CodeAnalysis.CSharp
 {
@@ -86,7 +87,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                 return;
 
             if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UnknownLanguageName))
-                AnalyzeUnknownLanguageName(context, attribute);
+                AnalyzeLanguageName(context, attribute);
         }
 
         private static void AnalyzeCodeFixProvider(SymbolAnalysisContext context, INamedTypeSymbol symbol)
@@ -97,7 +98,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                 return;
 
             if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UnknownLanguageName))
-                AnalyzeUnknownLanguageName(context, attribute);
+                AnalyzeLanguageName(context, attribute);
 
             if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.SpecifyExportCodeFixProviderAttributeName)
                 && !ContainsNamedArgument(attribute, "Name"))
@@ -114,7 +115,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                 return;
 
             if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UnknownLanguageName))
-                AnalyzeUnknownLanguageName(context, attribute);
+                AnalyzeLanguageName(context, attribute);
 
             if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.SpecifyExportCodeRefactoringProviderAttributeName)
                 && !ContainsNamedArgument(attribute, "Name"))
@@ -123,7 +124,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             }
         }
 
-        private static void AnalyzeUnknownLanguageName(SymbolAnalysisContext context, AttributeData attribute)
+        private static void AnalyzeLanguageName(SymbolAnalysisContext context, AttributeData attribute)
         {
             int argumentIndex = 0;
 
@@ -133,12 +134,10 @@ namespace Roslynator.CodeAnalysis.CSharp
                 {
                     case TypedConstantKind.Primitive:
                         {
-                            if (constructorArgument.Type.SpecialType == SpecialType.System_String)
+                            if (constructorArgument.Type.SpecialType == SpecialType.System_String
+                                && !RoslynUtility.WellKnownLanguageNames.Contains((string)constructorArgument.Value))
                             {
-                                var languageName = (string)constructorArgument.Value;
-
-                                if (!RoslynUtility.WellKnownLanguageNames.Contains(languageName))
-                                    ReportUnknownLanguageName(context, attribute, argumentIndex);
+                                ReportUnknownLanguageName(context, attribute, argumentIndex);
                             }
 
                             argumentIndex++;
@@ -170,7 +169,7 @@ namespace Roslynator.CodeAnalysis.CSharp
 
         private static bool ContainsNamedArgument(AttributeData attribute, string name)
         {
-            foreach (System.Collections.Generic.KeyValuePair<string, TypedConstant> namedArgument in attribute.NamedArguments)
+            foreach (KeyValuePair<string, TypedConstant> namedArgument in attribute.NamedArguments)
             {
                 if (string.Equals(namedArgument.Key, name, StringComparison.Ordinal))
                     return true;
