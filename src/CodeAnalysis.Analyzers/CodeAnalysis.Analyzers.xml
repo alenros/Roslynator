@@ -191,7 +191,7 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
 * `Microsoft.CodeAnalysis.SyntaxTriviaList`</Remarks>
   </Analyzer>
   <Analyzer Identifier="UnknownLanguageName">
-    <Id>R0S0010</Id>
+    <Id>ROS0010</Id>
     <Title>Unknown language name.</Title>
     <MessageFormat>Unknown language name.</MessageFormat>
     <Category>General</Category>
@@ -213,7 +213,7 @@ class FooDiagnosticAnalyzer : DiagnosticAnalyzer
     </Samples>
   </Analyzer>
   <Analyzer Identifier="SpecifyExportCodeRefactoringProviderAttributeName">
-    <Id>R0S0011</Id>
+    <Id>ROS0011</Id>
     <Title>Specify ExportCodeRefactoringProviderAttribute.Name.</Title>
     <MessageFormat>Specify ExportCodeRefactoringProviderAttribute.Name.</MessageFormat>
     <Category>Usage</Category>
@@ -235,7 +235,7 @@ class FooCodeRefactoringProvider : CodeRefactoringProvider
     </Samples>
   </Analyzer>
   <Analyzer Identifier="SpecifyExportCodeFixProviderAttributeName">
-    <Id>R0S0012</Id>
+    <Id>ROS0012</Id>
     <Title>Specify ExportCodeFixProviderAttribute.Name.</Title>
     <MessageFormat>Specify ExportCodeFixProviderAttribute.Name.</MessageFormat>
     <Category>Usage</Category>

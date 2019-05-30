@@ -38,7 +38,10 @@ namespace Roslynator.CodeAnalysis.CSharp
                 {
                     Compilation compilation = startContext.Compilation;
 
-                    INamedTypeSymbol syntaxNodeSymbol = compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode");
+                    INamedTypeSymbol csharpSyntaxNodeSymbol = compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode");
+
+                    if (csharpSyntaxNodeSymbol == null)
+                        return;
 
                     Dictionary<string, string> kindsToNames = compilation
                         .GetTypeByMetadataName("Microsoft.CodeAnalysis.CSharp.Syntax.AccessorDeclarationSyntax")
@@ -46,7 +49,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                         .GetTypeMembers()
                         .Where(f => f.TypeKind == TypeKind.Class
                             && !f.IsAbstract
-                            && f.InheritsFrom(syntaxNodeSymbol)
+                            && f.InheritsFrom(csharpSyntaxNodeSymbol)
                             && f.Name.EndsWith("Syntax", StringComparison.Ordinal))
                         .ToDictionary(f => f.Name.Remove(f.Name.Length - 6), f => f.Name);
 
@@ -106,6 +109,9 @@ namespace Roslynator.CodeAnalysis.CSharp
             {
                 SwitchLabelSyntax label = section.Labels.SingleOrDefault(shouldThrow: false);
 
+                if (label == null)
+                    return;
+
                 SyntaxKind labelKind = label.Kind();
 
                 if (labelKind == SyntaxKind.DefaultSwitchLabel)
@@ -126,9 +132,7 @@ namespace Roslynator.CodeAnalysis.CSharp
 
                 var memberAccess = (MemberAccessExpressionSyntax)value;
 
-                SimpleNameSyntax simpleName = memberAccess.Name;
-
-                if (!(simpleName is IdentifierNameSyntax identifierName))
+                if (!(memberAccess.Name is IdentifierNameSyntax identifierName))
                     return;
 
                 string kindName = identifierName.Identifier.ValueText;

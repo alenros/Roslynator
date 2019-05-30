@@ -8,9 +8,6 @@ namespace Roslynator.CodeAnalysis.CSharp
 {
     public static partial class DiagnosticIdentifiers
     {
-        public const string UnknownLanguageName = "R0S0010";
-        public const string SpecifyExportCodeRefactoringProviderAttributeName = "R0S0011";
-        public const string SpecifyExportCodeFixProviderAttributeName = "R0S0012";
         public const string UsePropertySyntaxNodeSpanStart = "ROS0001";
         public const string UsePropertySyntaxNodeRawKind = "ROS0002";
         public const string RedundantConditionalAccess = "ROS0003";
@@ -20,5 +17,8 @@ namespace Roslynator.CodeAnalysis.CSharp
         public const string UseElementAccess = "ROS0007";
         public const string UseReturnValue = "ROS0008";
         public const string CallLastInsteadOfUsingElementAccess = "ROS0009";
+        public const string UnknownLanguageName = "ROS0010";
+        public const string SpecifyExportCodeRefactoringProviderAttributeName = "ROS0011";
+        public const string SpecifyExportCodeFixProviderAttributeName = "ROS0012";
     }
 }
