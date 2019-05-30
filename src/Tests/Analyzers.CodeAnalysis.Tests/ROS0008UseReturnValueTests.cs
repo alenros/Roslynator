@@ -14,12 +14,12 @@ namespace Roslynator.CodeAnalysis.CSharp.Tests
 
         public override DiagnosticAnalyzer Analyzer { get; } = new InvocationExpressionAnalyzer();
 
-        public override CodeFixProvider FixProvider { get; }
+        public override CodeFixProvider FixProvider { get; } = new InvocationExpressionCodeFixProvider();
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReturnValue)]
         public async Task Test()
         {
-            await VerifyDiagnosticAsync(@"
+            await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 class C
@@ -28,6 +28,17 @@ class C
     {
         IfStatementSyntax ifStatement = null;
         [|ifStatement.WithCondition(null)|];
+    }
+}
+", @"
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+class C
+{
+    void M()
+    {
+        IfStatementSyntax ifStatement = null;
+        var x = ifStatement.WithCondition(null);
     }
 }
 ");

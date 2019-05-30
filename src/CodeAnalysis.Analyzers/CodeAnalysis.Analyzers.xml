@@ -97,6 +97,10 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
+        <Before><![CDATA[syntaxList.Count > 0 // [|Id|]]]></Before>
+        <After><![CDATA[syntaxList.Any()]]></After>
+      </Sample>
+      <Sample>
         <Before><![CDATA[syntaxList.Count == 0 // [|Id|]]]></Before>
         <After><![CDATA[!syntaxList.Any()]]></After>
       </Sample>
@@ -164,6 +168,7 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
     <Samples>
       <Sample>
         <Before><![CDATA[ifStatement.WithCondition(newCondition); // [|Id|]]]></Before>
+        <After><![CDATA[var x = ifStatement.WithCondition(newCondition);]]></After>
       </Sample>
     </Samples>
   </Analyzer>

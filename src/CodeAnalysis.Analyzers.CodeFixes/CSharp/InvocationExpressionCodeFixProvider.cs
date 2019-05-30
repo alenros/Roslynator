@@ -22,7 +22,12 @@ namespace Roslynator.CodeAnalysis.CSharp
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseElementAccess); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticIdentifiers.UseElementAccess,
+                    DiagnosticIdentifiers.UseReturnValue);
+            }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -35,15 +40,33 @@ namespace Roslynator.CodeAnalysis.CSharp
             Document document = context.Document;
             Diagnostic diagnostic = context.Diagnostics[0];
 
-            CodeAction codeAction = CodeAction.Create(
-                "Use [] instead of calling 'First'",
-                ct => UseElementAccessinsteadOfCallingFirst(document, invocationExpression, ct),
-                GetEquivalenceKey(diagnostic));
+            switch (diagnostic.Id)
+            {
+                case DiagnosticIdentifiers.UseElementAccess:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Use [] instead of calling 'First'",
+                            ct => UseElementAccessinsteadOfCallingFirstAsync(document, invocationExpression, ct),
+                            GetEquivalenceKey(diagnostic));
 
-            context.RegisterCodeFix(codeAction, diagnostic);
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
+                case DiagnosticIdentifiers.UseReturnValue:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            $"Introduce local for '{invocationExpression}'",
+                            ct => IntroduceLocalForExpressionAsync(document, invocationExpression, ct),
+                            GetEquivalenceKey(diagnostic));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+
+                        break;
+                    }
+            }
         }
 
-        private static Task<Document> UseElementAccessinsteadOfCallingFirst(
+        private static Task<Document> UseElementAccessinsteadOfCallingFirstAsync(
             Document document,
             InvocationExpressionSyntax invocationExpression,
             CancellationToken cancellationToken)
@@ -65,6 +88,23 @@ namespace Roslynator.CodeAnalysis.CSharp
                     Token(closeParenToken.LeadingTrivia, SyntaxKind.CloseBracketToken, closeParenToken.TrailingTrivia)));
 
             return document.ReplaceNodeAsync(invocationExpression, elementAccessExpression, cancellationToken);
+        }
+
+        private static async Task<Document> IntroduceLocalForExpressionAsync(
+            Document document,
+            InvocationExpressionSyntax invocationExpression,
+            CancellationToken cancellationToken)
+        {
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            string name = NameGenerator.Default.EnsureUniqueLocalName(DefaultNames.Variable, semanticModel, invocationExpression.SpanStart, cancellationToken: cancellationToken);
+
+            LocalDeclarationStatementSyntax localDeclarationStatement = LocalDeclarationStatement(
+                VarType(),
+                Identifier(name).WithRenameAnnotation(),
+                EqualsValueClause(invocationExpression).WithFormatterAnnotation());
+
+            return await document.ReplaceNodeAsync(invocationExpression.Parent, localDeclarationStatement, cancellationToken).ConfigureAwait(false);
         }
     }
 }
