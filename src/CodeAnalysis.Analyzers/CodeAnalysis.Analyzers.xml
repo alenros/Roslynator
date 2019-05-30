@@ -190,4 +190,70 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
 * `Microsoft.CodeAnalysis.SyntaxTokenList`
 * `Microsoft.CodeAnalysis.SyntaxTriviaList`</Remarks>
   </Analyzer>
+  <Analyzer Identifier="UnknownLanguageName">
+    <Id>R0S0010</Id>
+    <Title>Unknown language name.</Title>
+    <MessageFormat>Unknown language name.</MessageFormat>
+    <Category>General</Category>
+    <DefaultSeverity>Warning</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[[DiagnosticAnalyzer("C")] // [|Id|]
+class FooDiagnosticAnalyzer : DiagnosticAnalyzer
+{
+}]]></Before>
+        <After><![CDATA[[DiagnosticAnalyzer("C#")]
+class FooDiagnosticAnalyzer : DiagnosticAnalyzer
+{
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="SpecifyExportCodeRefactoringProviderAttributeName">
+    <Id>R0S0011</Id>
+    <Title>Specify ExportCodeRefactoringProviderAttribute.Name.</Title>
+    <MessageFormat>Specify ExportCodeRefactoringProviderAttribute.Name.</MessageFormat>
+    <Category>Usage</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[[ExportCodeRefactoringProvider(LanguageNames.CSharp)] // [|Id|]
+class FooCodeRefactoringProvider : CodeRefactoringProvider
+{
+}]]></Before>
+        <After><![CDATA[[ExportCodeRefactoringProvider(LanguageNames.CSharp, Name = nameof(FooCodeRefactoringProvider))]
+class FooCodeRefactoringProvider : CodeRefactoringProvider
+{
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="SpecifyExportCodeFixProviderAttributeName">
+    <Id>R0S0012</Id>
+    <Title>Specify ExportCodeFixProviderAttribute.Name.</Title>
+    <MessageFormat>Specify ExportCodeFixProviderAttribute.Name.</MessageFormat>
+    <Category>Usage</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[[ExportCodeFixProvider(LanguageNames.CSharp)] // [|Id|]
+class FooCodeFixProvider : CodeFixProvider
+{
+}]]></Before>
+        <After><![CDATA[[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(FooCodeFixProvider))]
+class FooCodeFixProvider : CodeFixProvider
+{
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>

@@ -9,6 +9,42 @@ namespace Roslynator.CodeAnalysis.CSharp
 {
     public static partial class DiagnosticDescriptors
     {
+        /// <summary>R0S0010</summary>
+        public static readonly DiagnosticDescriptor UnknownLanguageName = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UnknownLanguageName, 
+            title:              "Unknown language name.", 
+            messageFormat:      "Unknown language name.", 
+            category:           DiagnosticCategories.General, 
+            defaultSeverity:    DiagnosticSeverity.Warning, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UnknownLanguageName}", 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>R0S0011</summary>
+        public static readonly DiagnosticDescriptor SpecifyExportCodeRefactoringProviderAttributeName = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.SpecifyExportCodeRefactoringProviderAttributeName, 
+            title:              "Specify ExportCodeRefactoringProviderAttribute.Name.", 
+            messageFormat:      "Specify ExportCodeRefactoringProviderAttribute.Name.", 
+            category:           DiagnosticCategories.Usage, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.SpecifyExportCodeRefactoringProviderAttributeName}", 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>R0S0012</summary>
+        public static readonly DiagnosticDescriptor SpecifyExportCodeFixProviderAttributeName = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.SpecifyExportCodeFixProviderAttributeName, 
+            title:              "Specify ExportCodeFixProviderAttribute.Name.", 
+            messageFormat:      "Specify ExportCodeFixProviderAttribute.Name.", 
+            category:           DiagnosticCategories.Usage, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.SpecifyExportCodeFixProviderAttributeName}", 
+            customTags:         Array.Empty<string>());
+
         /// <summary>ROS0001</summary>
         public static readonly DiagnosticDescriptor UsePropertySyntaxNodeSpanStart = new DiagnosticDescriptor(
             id:                 DiagnosticIdentifiers.UsePropertySyntaxNodeSpanStart, 
