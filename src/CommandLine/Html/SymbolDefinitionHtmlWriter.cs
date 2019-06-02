@@ -337,8 +337,7 @@ namespace Roslynator.Documentation.Html
             bool isOperator = symbol.IsKind(SymbolKind.Method)
                 && ((IMethodSymbol)symbol).MethodKind.Is(MethodKind.Conversion, MethodKind.UserDefinedOperator);
 
-            if (!isOperator)
-                WriteStartElement("b");
+            WriteStartElement((isOperator) ? "span" : "b");
 
             if (DocumentationDisplayMode == DocumentationDisplayMode.ToolTip)
                 WriteDocumentationCommentToolTip(symbol);

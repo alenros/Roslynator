@@ -1677,6 +1677,60 @@ namespace Roslynator.Documentation
             }
         }
 
+        internal void WriteTypeLink2(
+            ITypeSymbol typeSymbol,
+            bool includeContainingNamespace = true,
+            bool includeContainingTypes = true,
+            bool canCreateExternalUrl = true)
+        {
+            ImmutableArray<SymbolDisplayPart> parts = typeSymbol.ToDisplayParts(SymbolDisplayFormats.TypeNameAndContainingTypesAndNamespacesAndGlobalNamespaceAndTypeParameters);
+
+            for (int i = 0; i < parts.Length; i++)
+            {
+                if (parts[i].IsGlobalNamespace()
+                    && Peek(i).IsPunctuation("::")
+                    && Peek(i + 1).IsNamespaceOrTypeName())
+                {
+                    i += 2;
+
+                    while (Peek(i).IsPunctuation(".")
+                        && Peek(i + 1).IsNamespaceOrTypeName())
+                    {
+                        i += 2;
+                    }
+
+                    ISymbol symbol = parts[i].Symbol.OriginalDefinition;
+
+                    if (includeContainingNamespace
+                        && symbol.IsKind(SymbolKind.NamedType)
+                        && !symbol.ContainingNamespace.IsGlobalNamespace)
+                    {
+                        WriteNamespaceSymbol(symbol.ContainingNamespace);
+                        WriteString(".");
+                    }
+
+                    string url = GetUrl(symbol, canCreateExternalUrl);
+
+                    SymbolDisplayFormat format = (includeContainingTypes)
+                        ? SymbolDisplayFormats.TypeNameAndContainingTypes
+                        : SymbolDisplayFormats.TypeName;
+
+                    WriteLinkOrText(symbol.ToDisplayString(format), url);
+                    continue;
+                }
+
+                WriteString(parts[i].ToString());
+            }
+
+            SymbolDisplayPart Peek(int index)
+            {
+                if (index + 1 < parts.Length)
+                    return parts[index + 1];
+
+                return default;
+            }
+        }
+
         private void WriteTypeLink(
             INamedTypeSymbol typeSymbol,
             bool includeContainingNamespace = true,

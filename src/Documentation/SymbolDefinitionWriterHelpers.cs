@@ -339,8 +339,11 @@ namespace Roslynator.Documentation
                 {
                     j++;
 
-                    if (!Peek(j).IsTypeName())
+                    if (!Peek(j).IsTypeName()
+                        || Peek(j).Symbol.IsKind(SymbolKind.Method))
+                    {
                         break;
+                    }
 
                     j++;
 

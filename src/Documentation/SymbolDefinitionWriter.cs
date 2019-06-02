@@ -1009,7 +1009,7 @@ namespace Roslynator.Documentation
                         }
 
                         if (Peek(j).IsPunctuation(".")
-                            && Peek(j + 1).Kind == SymbolDisplayPartKind.FieldName)
+                            && Peek(j + 1).Kind == SymbolDisplayPartKind.EnumMemberName)
                         {
                             j += 2;
                         }

@@ -51,6 +51,12 @@ namespace Roslynator.Documentation
             genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
             memberOptions: SymbolDisplayMemberOptions.IncludeContainingType);
 
+        public static SymbolDisplayFormat TypeNameAndContainingTypesAndNamespacesAndGlobalNamespaceAndTypeParameters { get; } = Default.Update(
+            globalNamespaceStyle: SymbolDisplayGlobalNamespaceStyle.Included,
+            typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
+            genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
+            memberOptions: SymbolDisplayMemberOptions.IncludeContainingType);
+
         public static SymbolDisplayFormat NamespaceDeclaration { get; } = Default.Update(
              typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
              kindOptions: SymbolDisplayKindOptions.IncludeNamespaceKeyword);
